@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="JpaBuddyIdeaProjectConfig">
+  <component name="JpaBuddyIdeaProjectConfig" migrateIndexesAndConstraints="true">
     <option name="defaultUnitInitialized" value="true" />
     <option name="renamerInitialized" value="true" />
+    <option name="reverseEngineeringLastDbConnectionId" value="b4e8d6ce-a6b4-4e4d-af2e-5f64848bb5d9" />
+    <option name="reLastEntityCreationPackage" value="src/main/java/com/dev/domain/denuncia2" />
   </component>
 </project>

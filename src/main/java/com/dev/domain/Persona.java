@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -17,6 +16,9 @@ import javax.persistence.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name="PERSONA")
 public class Persona {
@@ -69,8 +71,9 @@ public class Persona {
 
 	//@JsonBackReference
 	//@JsonBackReference
-	@JsonIgnoreProperties({"persona", "lstDenunciasPersonas"})
-	@OneToMany(mappedBy = "persona")//, fetch = FetchType.EAGER)
+	//@JsonIgnoreProperties({"persona", "lstDenunciasPersonas"})
+	@JsonBackReference
+	@OneToMany(mappedBy = "persona", fetch = FetchType.EAGER)
 	private Set<DenunciaPersona> lstDenunciasPersonas;
 
 	@Column(name="CD_USU_ALTA")

@@ -12,7 +12,6 @@ public class DenunciaPersonaDTO {
     private DenunciaDTO denunciaDTO;
     private PersonaDTO personaDTO;
 
-    private LocalDateTime fcAltaDenuncia;
     private CatalogosValoresDTO tipoPersona;
 
     public DenunciaPersonaDTO() {

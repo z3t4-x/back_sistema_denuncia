@@ -1,0 +1,10 @@
+
+\
+java:S2259V"AA "NullPointerException" could be thrown; "dto" is nullable here.(€ãáïþÿÿÿÿ
+V	java:S1256"<This block of commented-out lines of code should be removed.(î›³˜úÿÿÿÿ
+N
+java:S1128"3Remove this unused import 'com.dev.domain.Persona'.(ºšˆ„üÿÿÿÿ
+N
+java:S1128"3Remove this unused import 'com.dev.dto.PersonaDTO'.(þÙ¹Óûÿÿÿÿ
+K
+java:S1128"5Remove this unused import 'com.dev.utils.Constantes'.(°½ìÐ

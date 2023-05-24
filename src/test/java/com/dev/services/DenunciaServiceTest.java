@@ -2,6 +2,14 @@ package com.dev.services;
 
 import com.dev.dbmemory.H2DatabaseConfig;
 
+import com.dev.domain.DenunciaPersona;
+import com.dev.dto.CatalogosValoresDTO;
+import com.dev.dto.DenunciaDTO;
+import com.dev.dto.DenunciaPersonaDTO;
+import com.dev.dto.PersonaDTO;
+import com.dev.dto.converters.DenunciaPersonaToEntity;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,17 +19,19 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(SpringRunner.class)
 @Sql("/data-test/data-vocalia.sql")
 @SpringBootTest
 @ActiveProfiles(profiles = {"BaseDatosEnMemoria"})
 @Import(H2DatabaseConfig.class)
+@Slf4j
 //@ContextConfiguration(classes = {H2DatabaseConfig.class}, initializers = ConfigDataApplicationContextInitializer.class)
 public class DenunciaServiceTest {
 
@@ -35,6 +45,126 @@ public class DenunciaServiceTest {
     private PersonaService personaService;
 
 
+
+    @Test
+    public  void RegistrarDenunciaTest() throws Exception {
+
+        DenunciaDTO dto = new DenunciaDTO();
+
+        CatalogosValoresDTO fiscalia =  new CatalogosValoresDTO();
+        fiscalia.setIdValor(39);
+        dto.setFiscalia(fiscalia);
+        CatalogosValoresDTO tipoDelito = new CatalogosValoresDTO();
+        tipoDelito.setIdValor(25);
+        dto.setTipoDelito(tipoDelito);
+        LocalDate fcHechos = LocalDate.parse("2023-04-10");
+        dto.setFcHechos(fcHechos);
+        CatalogosValoresDTO auxiliar = new CatalogosValoresDTO();
+        auxiliar.setIdValor(18);
+        dto.setAuxiliar(auxiliar);
+        CatalogosValoresDTO mesaPartes =  new CatalogosValoresDTO();
+        mesaPartes.setIdValor(41);
+        dto.setMesaParte(mesaPartes);
+        dto.setDsDescripcion("DELITO ABUSO DE AUTORIDAD -> PRUEBA");
+        CatalogosValoresDTO tipoDocumento = new CatalogosValoresDTO();
+        tipoDocumento.setIdValor(14);
+        dto.setTipoDocumento(tipoDocumento);
+        LocalDate fcIngresoDocumento = LocalDate.parse("2023-04-13");
+        dto.setFcIngresoDocumento(LocalDate.from(fcIngresoDocumento.atStartOfDay()));
+        dto.setNmDocumento("Doc-003");
+
+        dto =  denunciaService.registrarTransaccional(dto);
+      log.info("======> antes deel set {} ", dto.getNmDocumento());
+
+
+        dto.setNmDocumento("prueba");
+        DenunciaDTO resultado = denunciaService.registrarTransaccional(dto);
+
+        // Verificar que el resultado no sea nulo
+        Assert.assertNotNull(resultado);
+
+        // Verificar que el atributo nmDocumento haya sido actualizado correctamente
+        Assert.assertEquals("prueba", resultado.getNmDocumento());
+
+
+        // Obtener el denunciante y agregarlo a la lista de denunciantes
+        PersonaDTO denuncianteDTO = personaService.buscarPorId(1);
+
+        List<DenunciaPersonaDTO> lstDenunciantesDTO = new ArrayList<>();
+        DenunciaPersonaDTO denunciante = new DenunciaPersonaDTO();
+        denunciante.setPersonaDTO(denuncianteDTO);
+        denunciante.setTipoPersona(new CatalogosValoresDTO(33));
+        lstDenunciantesDTO.add(denunciante);
+        resultado.setLstDenunciantes(lstDenunciantesDTO);
+
+        // Obtener el denunciado y agregarlo a la lista de denunciados
+        PersonaDTO denunciadoDTO = personaService.buscarPorId(4);
+        List<DenunciaPersonaDTO> lstDenunciadosDTO = new ArrayList<>();
+
+        DenunciaPersonaDTO denunciado = new DenunciaPersonaDTO();
+        denunciado.setPersonaDTO(denunciadoDTO);
+        denunciado.setTipoPersona(new CatalogosValoresDTO(34));
+        lstDenunciadosDTO.add(denunciado);
+        resultado.setLstDenunciados(lstDenunciadosDTO);
+
+        // Llamar al método registrarTransaccional nuevamente para actualizar la denuncia
+        DenunciaDTO resultadoActualizado = denunciaService.registrarTransaccional(resultado);
+
+        // Verificar que el atributo nmDocumento haya sido actualizado correctamente
+        Assert.assertEquals("prueba", resultadoActualizado.getNmDocumento());
+        // Verificar que la lista de denunciantes contenga al denunciante
+        Assert.assertTrue(resultadoActualizado.getLstDenunciantes().contains(denunciante));
+        // Verificar que la lista de denunciados contenga al denunciado
+        Assert.assertTrue(resultadoActualizado.getLstDenunciados().contains(denunciado));
+
+
+
+
+
+
+
+
+
+// Perform test operations with the denunciaDTO object
+
+
+/*        dto.setLstDenunciados(denuncianteDTO);
+
+        PersonaDTO denunciadoDTO = personaService.buscarPorId(4);
+
+        DenunciaPersonaDTO denunciaPersonaDTO =  new DenunciaPersonaDTO();
+        denunciaPersonaDTO.setPersonaDTO(denuncianteDTO);
+        denunciaPersonaDTO.setDenunciaDTO(dto);
+        denunciaPersonaDTO.setTipoPersona(new CatalogosValoresDTO(33));
+
+        dto.getLstDenunciados().add(denunciaPersonaDTO);
+
+
+
+        DenunciaPersonaDTO denunciantesDTOx =  new DenunciaPersonaDTO();
+        denunciantesDTO.setPersonaDTO(denunciadoDTO);
+        denunciantesDTO.setDenunciaDTO(denuncia);
+        denunciantesDTO.setTipoPersona(new CatalogosValoresDTO(34));
+
+        denuncia.getLstDenunciantes().add(denunciantesDTO);*/
+
+       // Assert.assertEquals("", denunciantesDTO.getTipoPersona().getIdValor());
+
+
+
+
+    }
+
+    @Test
+    public void modificarDenunciaTest() throws Exception {
+
+        DenunciaDTO dto =  denunciaService.lstPorId(1);
+
+        dto.setEstadoDenuncia(new CatalogosValoresDTO(6));
+
+        dto = denunciaService.modificar(dto);
+        Assert.assertTrue(dto.getEstadoDenuncia().getIdValor().equals(6));
+    }
 
     @Test
     public void testListarPersonas() {
@@ -213,5 +343,13 @@ public class DenunciaServiceTest {
 
     }
 */
+
+
+
+
+
+
+
+
     }
     }

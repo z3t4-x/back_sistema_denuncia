@@ -83,7 +83,8 @@ public class DenunciaController {
 			DenunciaDTO denunciaModificada = service.modificar(denunciaDTO);
 			return ResponseEntity.ok(denunciaModificada);
 		} catch (Exception e) {
-			log.info("==========> MODIFICACIÓN ==> " , e.getMessage());
+			log.info("==========> MODIFICACIÓN ==> {}" , e.getMessage());
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}

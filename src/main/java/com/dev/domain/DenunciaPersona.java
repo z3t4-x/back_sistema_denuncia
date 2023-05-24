@@ -10,36 +10,26 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "DENUNCIA_PERSONA")
 @Entity
 @IdClass(DenunciaPersonaPK.class)
 public class DenunciaPersona implements Serializable {
-
-
-	//@JsonBackReference
-	//@JsonManagedReference
-	//@JsonIgnoreProperties({"lstDenunciantes", "lstDenunciados"})
-	//@JsonIgnoreProperties({"lstDenunciantes", "lstDenunciados", "hibernateLazyInitalizer", "handler"})
 	@Id
-	@JsonIgnoreProperties({"lstDenunciantes", "lstDenunciados"})
-	@ManyToOne(optional = false)//, fetch = FetchType.EAGER)
+	//@JsonIgnoreProperties({"lstDenunciantes", "lstDenunciados"})
+	@JsonManagedReference
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_denuncia", nullable = false)
 	private Denuncia denuncia;
-
-	//@JsonBackReference
-	//@JsonManagedReference
-	//@JsonIgnoreProperties({"lstDenunciasPersonas"})
 	@Id
-	@JsonIgnoreProperties("lstDenunciasPersonas")
-	@ManyToOne(optional = false)//, fetch = FetchType.EAGER)
+	//@JsonIgnoreProperties("lstDenunciasPersonas")
+	@JsonManagedReference
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_persona", nullable = false)
 	private Persona persona;
-
-	@Column(name = "FC_ALTA_DENUNCIA")
-	private LocalDateTime fcAltaDenuncia;
-
 	@ManyToOne
 	@JoinColumn(name = "ID_TIPO_PERSONA")
 	private CatalogosValores tipoPersona;

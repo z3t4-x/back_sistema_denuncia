@@ -1,0 +1,12 @@
+
+n
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(¼¹ç
+
+t
+java:S2293"YReplace the type specification in this constructor call with the diamond operator ("<>").(ª‰Ö×ûÿÿÿÿ
+o
+java:S2293+"YReplace the type specification in this constructor call with the diamond operator ("<>").(¶½¹ê
+i
+java:S1602%"SRemove useless curly braces around statement and then remove useless return keyword(ãŒíŸ
+`
+java:S1858&"K"getDefaultMessage" returns a string, there's no need to call "toString()".(ýàÓd

@@ -3,6 +3,7 @@ package com.dev.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,15 +17,30 @@ public class Usuario {
     @Column(name = "ID_USUARIO")
     private Long idUsuario;
 
-    @Column(name = "NOMBRE_USUARIO")
-    private String nombreUsuario;
+    @Column(name = "NOMBRE")
+    private String nombre;
+
+    @Column(name = "APELLIDO")
+    private String apellido;
+
+    @Column(name = "USUARIO", unique = true)
+    private  String usuario;
 
     @Column(name = "CONTRASENIA")
     private String contrasenia;
 
+    @Email
+    @Column(name = "EMAIL", unique = true)
+    private  String email;
+
     @ManyToOne//(fetch = FetchType.LAZY)
     @JoinColumn(name="ID_FISCALIA")
     private CatalogosValores fiscalia;
+
+
+    @ManyToOne//(fetch = FetchType.LAZY)
+    @JoinColumn(name="ID_MESA_PARTE")
+    private CatalogosValores mesaParte;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

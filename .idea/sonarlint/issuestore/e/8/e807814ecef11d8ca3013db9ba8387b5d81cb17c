@@ -1,0 +1,18 @@
+
+{
+java:S2293&"YReplace the type specification in this constructor call with the diamond operator ("<>").(Φ†ΰ¬ϊÿÿÿÿ8¦¦ρώ0
+v
+java:S22931"YReplace the type specification in this constructor call with the diamond operator ("<>").(€ι¨‹8¦¦ρώ0
+{
+java:S22937"YReplace the type specification in this constructor call with the diamond operator ("<>").(‹γΊοψÿÿÿÿ8¦¦ρώ0
+v
+java:S2293B"YReplace the type specification in this constructor call with the diamond operator ("<>").(€ι¨‹8¦¦ρώ0
+{
+java:S2293N"YReplace the type specification in this constructor call with the diamond operator ("<>").(Ιθ―†ψÿÿÿÿ8¦¦ρώ0
+X	java:S125?"<This block of commented-out lines of code should be removed.(Ν·ί8¦¦ρώ0
+]
+java:S1128";Remove this unused import 'com.dev.domain.DenunciaPersona'.(ƒµϊÿÿÿÿ8Δ¬Θ‰ƒ1
+U
+java:S1128	"3Remove this unused import 'com.dev.domain.Persona'.(Ί„όÿÿÿÿ8Ζ¬Θ‰ƒ1
+b
+java:S1128"@Remove this unused import 'com.dev.dto.converters.PersonaToDTO'.(Θ“™κϋÿÿÿÿ8Η¬Θ‰ƒ1

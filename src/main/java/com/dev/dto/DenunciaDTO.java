@@ -13,9 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class DenunciaDTO extends AuditoriaDTO implements Serializable {
-
     private Integer idDenuncia;
-
     private LocalDateTime fcAltaDenuncia;
     private CatalogosValoresDTO fiscalia;
     private CatalogosValoresDTO tipoDelito;

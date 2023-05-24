@@ -1,14 +1,16 @@
 package com.dev.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import javax.persistence.*;
 
 @Embeddable
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class DenunciaPersonaPK implements Serializable {
 

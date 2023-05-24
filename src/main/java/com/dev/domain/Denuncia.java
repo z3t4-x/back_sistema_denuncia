@@ -4,8 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,8 +15,11 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name="DENUNCIA")
 public class Denuncia {
@@ -91,15 +93,17 @@ public class Denuncia {
 
 	//@JsonBackReference
 	//@JsonIgnoreProperties({"denuncia", "hibernateLazyInitalizer", "handler"})
-	@JsonIgnoreProperties({"denuncia", "lstDenunciantes"})
-	@OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)//, fetch = FetchType.EAGER)
+	//@JsonIgnoreProperties({"denuncia", "lstDenunciantes"})
+	@JsonBackReference
+	@OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<DenunciaPersona> lstDenunciantes = new HashSet<>();
 
 
 	//@JsonBackReference
 	//@JsonIgnoreProperties({"denuncia", "hibernateLazyInitalizer", "handler"})
-	@JsonIgnoreProperties({"denuncia", "lstDenunciados"})
-	@OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)//, fetch = FetchType.EAGER)
+	//@JsonIgnoreProperties({"denuncia", "lstDenunciados"})
+	@JsonBackReference
+	@OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<DenunciaPersona> lstDenunciados = new HashSet<>();
 
 

@@ -2,10 +2,13 @@ package com.dev.dto.converters;
 
 import com.dev.domain.Denuncia;
 import com.dev.dto.DenunciaDTO;
+import com.dev.dto.DenunciaPersonaDTO;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public enum DenunciaToDTO implements Function<Denuncia, DenunciaDTO> {
 
@@ -38,6 +41,35 @@ public enum DenunciaToDTO implements Function<Denuncia, DenunciaDTO> {
             if (entity.getTipoDocumento() != null) {
                 dto.setTipoDocumento(CatalogosValoresToDTO.INSTANCE.apply(entity.getTipoDocumento()));
             }
+
+/*            if (entity.getLstDenunciantes() != null) {
+                List<DenunciaPersonaDTO> lstDenunciantesDTO = entity.getLstDenunciantes().stream()
+                        .map(denunciaPersona -> DenunciaPersonaToDTO.INSTANCE.apply(denunciaPersona))
+                        .collect(Collectors.toList());
+                dto.setLstDenunciantes(lstDenunciantesDTO);
+            }
+
+            if (entity.getLstDenunciados() != null) {
+                List<DenunciaPersonaDTO> lstDenunciadosDTO = entity.getLstDenunciados().stream()
+                        .map(denunciaPersona -> DenunciaPersonaToDTO.INSTANCE.apply(denunciaPersona))
+                        .collect(Collectors.toList());
+                dto.setLstDenunciados(lstDenunciadosDTO);
+            }*/
+
+/*            if (entity.getLstDenunciantes() != null) {
+                List<DenunciaPersonaDTO> lstDenunciantesDTO = entity.getLstDenunciantes().stream()
+                        .map(denunciaPersona -> DenunciaPersonaToDTO.INSTANCE.apply(denunciaPersona))
+                        .collect(Collectors.toList());
+                dto.setLstDenunciantes(lstDenunciantesDTO);
+            }
+
+            // Mapeo explícito de lstDenunciados
+            if (entity.getLstDenunciados() != null) {
+                List<DenunciaPersonaDTO> lstDenunciadosDTO = entity.getLstDenunciados().stream()
+                        .map(denunciaPersona -> DenunciaPersonaToDTO.INSTANCE.apply(denunciaPersona))
+                        .collect(Collectors.toList());
+                dto.setLstDenunciados(lstDenunciadosDTO);
+            }*/
 
 
         }
