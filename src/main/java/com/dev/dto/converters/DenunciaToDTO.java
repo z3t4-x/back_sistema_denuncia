@@ -56,22 +56,6 @@ public enum DenunciaToDTO implements Function<Denuncia, DenunciaDTO> {
                 dto.setLstDenunciados(lstDenunciadosDTO);
             }*/
 
-/*            if (entity.getLstDenunciantes() != null) {
-                List<DenunciaPersonaDTO> lstDenunciantesDTO = entity.getLstDenunciantes().stream()
-                        .map(denunciaPersona -> DenunciaPersonaToDTO.INSTANCE.apply(denunciaPersona))
-                        .collect(Collectors.toList());
-                dto.setLstDenunciantes(lstDenunciantesDTO);
-            }
-
-            // Mapeo explícito de lstDenunciados
-            if (entity.getLstDenunciados() != null) {
-                List<DenunciaPersonaDTO> lstDenunciadosDTO = entity.getLstDenunciados().stream()
-                        .map(denunciaPersona -> DenunciaPersonaToDTO.INSTANCE.apply(denunciaPersona))
-                        .collect(Collectors.toList());
-                dto.setLstDenunciados(lstDenunciadosDTO);
-            }*/
-
-
         }
 
         return dto;

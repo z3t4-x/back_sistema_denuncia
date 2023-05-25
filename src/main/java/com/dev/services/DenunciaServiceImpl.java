@@ -2,10 +2,7 @@ package com.dev.services;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.dev.dao.*;
@@ -131,39 +128,71 @@ public class DenunciaServiceImpl implements DenunciaService {
 	@Override
 	public DenunciaDTO modificar(DenunciaDTO denunciaDTO) throws Exception {
 
+
+		//Denuncia denuncia = DenunciaToEntity.INSTANCE.apply(denunciaDTO);
+
 		DenunciaDTO dto = cambiarEstadoDenuncia(denunciaDTO, new CatalogosValoresDTO(denunciaDTO.getEstadoDenuncia().getIdValor()));
 
-		// evalua si la denuncia está en una etapa y genera el código del numExpediente
-		if(denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.PRELIMINAR)){
-			denunciaDTO.setNmExpedienteInvPreliminar(this.generarCodigoDenuncia(denunciaDTO));
-		}
+			// evalua si la denuncia está en una etapa y genera el código del numExpediente
+			if(denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.PRELIMINAR)){
+				denunciaDTO.setNmExpedienteInvPreliminar(this.generarCodigoDenuncia(denunciaDTO));
+			}
 
-		if(denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.PREPARATORIA)){
-			denunciaDTO.setNmExpedientePreparatoria(this.generarCodigoDenuncia(denunciaDTO));
-		}
-
+			if(denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.PREPARATORIA)){
+				denunciaDTO.setNmExpedientePreparatoria(this.generarCodigoDenuncia(denunciaDTO));
+			}
 
 		Denuncia denuncia = DenunciaToEntity.INSTANCE.apply(denunciaDTO);
 
-		// Verificar si la denuncia ya existe en la base de datos
-		Optional<Denuncia> denunciaExistenteOptional = denunciaDAO.findById(denuncia.getIdDenuncia());
-		if (!denunciaExistenteOptional.isPresent()) {
-			throw new Exception("La denuncia con ID " + denuncia.getIdDenuncia() + " no existe.");
+
+		// Actualizar los denunciantes
+		if (denunciaDTO.getLstDenunciantes() != null && !denunciaDTO.getLstDenunciantes().isEmpty()) {
+			for (DenunciaPersonaDTO denuncianteDTO : denunciaDTO.getLstDenunciantes()) {
+				try {
+					Persona persona  = personaDAO.findById(denuncianteDTO.getPersonaDTO().getIdPersona()).orElse(null);
+					DenunciaPersona denunciaPersona = new DenunciaPersona();
+					denunciaPersona.setDenuncia(denuncia);
+					denunciaPersona.setPersona(persona);
+					denunciaPersona.setTipoPersona(new CatalogosValores(Constantes.tipoPersonaId.DENUNCIANTE));
+					//denunciaPersonaDAO.save(denunciaPersona);
+					denuncia.getLstDenunciantes().add(denunciaPersona);
+
+				} catch (Exception e) {
+					throw e;
+				}
+			}
 		}
 
-		Denuncia denunciaExistente = denunciaExistenteOptional.get();
 
-		// Actualizar los atributos de la denuncia existente con los nuevos valores
-		actualizarAtributosDenuncia(denunciaExistente, denuncia);
 
-		// Guardar los cambios en la denuncia existente
-		denunciaExistente = denunciaDAO.save(denunciaExistente);
+		// Agregar denunciados
+		if (denunciaDTO.getLstDenunciados() != null && !denunciaDTO.getLstDenunciados().isEmpty()) {
 
+			for (DenunciaPersonaDTO denunciadoDTO : denunciaDTO.getLstDenunciados()) {
+				try {
+
+					Persona persona  = personaDAO.findById(denunciadoDTO.getPersonaDTO().getIdPersona()).orElse(null);
+
+					DenunciaPersona denunciaPersona = new DenunciaPersona();
+					denunciaPersona.setDenuncia(denuncia);
+					denunciaPersona.setPersona(persona);
+					denunciaPersona.setTipoPersona(new CatalogosValores(Constantes.tipoPersonaId.DENUNCIADO));
+				//	denunciaPersonaDAO.save(denunciaPersona);
+					denuncia.getLstDenunciados().add(denunciaPersona);
+				} catch (Exception e) {
+
+					throw e;
+				}
+			}
+		}
+
+
+		denuncia = denunciaDAO.save(denuncia);
 		// Crear el historial
-		this.crearHistorico(denunciaExistente, denunciaExistente.getCdUsuAlta());
+		this.crearHistorico(denuncia, denuncia.getCdUsuAlta());
 
 		// Convertir la entidad modificada a DTO y retornarla
-		return DenunciaToDTO.INSTANCE.apply(denunciaExistente);
+		return DenunciaToDTO.INSTANCE.apply(denuncia);
 	}
 
 	/**
@@ -315,6 +344,9 @@ public class DenunciaServiceImpl implements DenunciaService {
 		// que pediente revisar de que forma obternel la fiscalía al momento de iniciar sesión
 		//denunciaDTO.setFiscalia(denunciaDTO.getFiscalia());
 		denunciaDTO.setFiscalia(new CatalogosValoresDTO(39));
+
+		//TODO
+		// que pediente revisar de que forma obternel la mesa de parte al momento de iniciar sesión
 		denunciaDTO.setMesaParte(new CatalogosValoresDTO(41));
 		String numDenuncia = this.generarCodigoDenuncia(denunciaDTO);
 		denunciaDTO.setNmDenuncia(numDenuncia);
@@ -410,7 +442,13 @@ public class DenunciaServiceImpl implements DenunciaService {
 		}*/
 
 
-	private void actualizarAtributosDenuncia(Denuncia denunciaExistente, Denuncia denunciaNueva) {
+	/***
+	 * método para actualizar la denuncia
+	 * @param denunciaExistente
+	 * @param denunciaNueva
+	 */
+/*	private void actualizarAtributosDenuncia(Denuncia denunciaExistente, Denuncia denunciaNueva) {
+
 		denunciaExistente.setFcAltaDenuncia(denunciaNueva.getFcAltaDenuncia());
 		denunciaExistente.setFiscalia(denunciaNueva.getFiscalia());
 		denunciaExistente.setTipoDelito(denunciaNueva.getTipoDelito());
@@ -427,22 +465,9 @@ public class DenunciaServiceImpl implements DenunciaService {
 		denunciaExistente.setNmExpedientePreparatoria(denunciaNueva.getNmExpedientePreparatoria());
 		denunciaExistente.setNmExpedienteInvPreliminar(denunciaNueva.getNmExpedienteInvPreliminar());
 
-		// Actualizar los denunciantes
-		if (denunciaNueva.getLstDenunciantes() != null) {
-			denunciaExistente.getLstDenunciantes().clear(); // Limpiar la lista existente
-			denunciaExistente.getLstDenunciantes().addAll(denunciaNueva.getLstDenunciantes()); // Agregar nuevos elementos
-		} else {
-			denunciaExistente.getLstDenunciantes().clear(); // Limpiar la lista existente
-		}
 
-		// Actualizar los denunciados
-		if (denunciaNueva.getLstDenunciados() != null) {
-			denunciaExistente.getLstDenunciados().clear(); // Limpiar la lista existente
-			denunciaExistente.getLstDenunciados().addAll(denunciaNueva.getLstDenunciados()); // Agregar nuevos elementos
-		} else {
-			denunciaExistente.getLstDenunciados().clear(); // Limpiar la lista existente
-		}
-	}
+	}*/
+
 
 
 
