@@ -42,7 +42,7 @@ public enum DenunciaToDTO implements Function<Denuncia, DenunciaDTO> {
                 dto.setTipoDocumento(CatalogosValoresToDTO.INSTANCE.apply(entity.getTipoDocumento()));
             }
 
-/*            if (entity.getLstDenunciantes() != null) {
+/*          if (entity.getLstDenunciantes() != null) {
                 List<DenunciaPersonaDTO> lstDenunciantesDTO = entity.getLstDenunciantes().stream()
                         .map(denunciaPersona -> DenunciaPersonaToDTO.INSTANCE.apply(denunciaPersona))
                         .collect(Collectors.toList());

@@ -2,12 +2,17 @@ package com.dev.services;
 
 import com.dev.dbmemory.H2DatabaseConfig;
 
+import com.dev.domain.CatalogosValores;
+import com.dev.domain.Denuncia;
 import com.dev.domain.DenunciaPersona;
+import com.dev.domain.Persona;
 import com.dev.dto.CatalogosValoresDTO;
 import com.dev.dto.DenunciaDTO;
 import com.dev.dto.DenunciaPersonaDTO;
 import com.dev.dto.PersonaDTO;
 import com.dev.dto.converters.DenunciaPersonaToEntity;
+import com.dev.dto.converters.DenunciaToEntity;
+import com.dev.dto.converters.PersonaToEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
@@ -160,10 +165,27 @@ public class DenunciaServiceTest {
 
         DenunciaDTO dto =  denunciaService.lstPorId(1);
 
-        dto.setEstadoDenuncia(new CatalogosValoresDTO(6));
+        dto.setEstadoDenuncia(new CatalogosValoresDTO(8));
+
+/*        Denuncia denuncia = DenunciaToEntity.INSTANCE.apply(dto);
+
+      //  List<DenunciaPersona> nuevoDenunciante =  new ArrayList<>();
+
+        PersonaDTO personaDTO = personaService.buscarPorId(3);
+
+        Persona persona = PersonaToEntity.INSTANCE.apply(personaDTO);
+
+
+        DenunciaPersona denunciaPersona =  new DenunciaPersona();
+        denunciaPersona.setDenuncia(denuncia);
+        denunciaPersona.setPersona(persona);
+        denunciaPersona.setTipoPersona(new CatalogosValores(34));
+       // nuevoDenunciante.add(denunciaPersona);
+        denuncia.getLstDenunciados().add(denunciaPersona);*/
+
 
         dto = denunciaService.modificar(dto);
-        Assert.assertTrue(dto.getEstadoDenuncia().getIdValor().equals(6));
+        Assert.assertTrue(dto.getEstadoDenuncia().getIdValor().equals(8));
     }
 
     @Test

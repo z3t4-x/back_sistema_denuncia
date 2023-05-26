@@ -9,8 +9,6 @@ g
 7src/main/java/com/dev/controller/PersonaController.java,e\8\e807814ecef11d8ca3013db9ba8387b5d81cb17c
 k
 ;src/main/java/com/dev/services/CatalogosValoresService.java,b\2\b21f17e5185f851d036e202a0e91c11aef93421b
-f
-6src/main/java/com/dev/services/PersonaServiceImpl.java,1\8\187ed44d534a9b55c747bf7d3045344123192bc2
 [
 +src/main/java/com/dev/dto/CatalogosDTO.java,3\3\332a05ae3c5810f712c4888879834c8057904299
 d
@@ -21,8 +19,6 @@ b
 2src/main/java/com/dev/dto/CatalogosValoresDTO.java,7\9\79693ae9e222645789f6f231d29d4b92385de906
 c
 3src/main/java/com/dev/dto/DenunciaPersonaPKDTO.java,8\4\84693eb7b470674e350a910528ea76c3f1469059
-b
-2src/main/java/com/dev/dao/IDenunciaPersonaDAO.java,d\3\d37475182a71a5084436d7bf54139a6e63929481
 h
 8src/main/java/com/dev/dto/converters/CatalogosToDTO.java,d\e\deebdf28cf8f1a81b2c820f1a81eabbf949e1d59
 k

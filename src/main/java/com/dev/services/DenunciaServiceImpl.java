@@ -1,5 +1,6 @@
 package com.dev.services;
 
+import java.sql.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -11,7 +12,6 @@ import com.dev.dto.CatalogosValoresDTO;
 import com.dev.dto.DenunciaDTO;
 import com.dev.dto.DenunciaPersonaDTO;
 import com.dev.dto.converters.*;
-import com.dev.exception.ModeloNotFoundException;
 import com.dev.utils.Constantes;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
@@ -20,16 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 @Slf4j
 @Service
 public class DenunciaServiceImpl implements DenunciaService {
 
 
-	@PersistenceContext
-	private EntityManager entityManager;
 	@Autowired
 	private IDenunciaDAO denunciaDAO;
 
@@ -128,10 +124,10 @@ public class DenunciaServiceImpl implements DenunciaService {
 	@Override
 	public DenunciaDTO modificar(DenunciaDTO denunciaDTO) throws Exception {
 
+		Denuncia denuncia = denunciaDAO.findById(denunciaDTO.getIdDenuncia())
+				.orElseThrow(() -> new ServiceException("Denuncia no encontrada"));
 
-		//Denuncia denuncia = DenunciaToEntity.INSTANCE.apply(denunciaDTO);
-
-		DenunciaDTO dto = cambiarEstadoDenuncia(denunciaDTO, new CatalogosValoresDTO(denunciaDTO.getEstadoDenuncia().getIdValor()));
+		//	denunciaDTO = cambiarEstadoDenuncia(denunciaDTO, new CatalogosValoresDTO(denunciaDTO.getEstadoDenuncia().getIdValor()));
 
 			// evalua si la denuncia está en una etapa y genera el código del numExpediente
 			if(denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.PRELIMINAR)){
@@ -142,29 +138,29 @@ public class DenunciaServiceImpl implements DenunciaService {
 				denunciaDTO.setNmExpedientePreparatoria(this.generarCodigoDenuncia(denunciaDTO));
 			}
 
-		Denuncia denuncia = DenunciaToEntity.INSTANCE.apply(denunciaDTO);
-
-
-		// Actualizar los denunciantes
+		denunciaDTO.setFcModifFila(LocalDateTime.now());
+		// Agregar denunciantes
 		if (denunciaDTO.getLstDenunciantes() != null && !denunciaDTO.getLstDenunciantes().isEmpty()) {
+
 			for (DenunciaPersonaDTO denuncianteDTO : denunciaDTO.getLstDenunciantes()) {
 				try {
-					Persona persona  = personaDAO.findById(denuncianteDTO.getPersonaDTO().getIdPersona()).orElse(null);
-					DenunciaPersona denunciaPersona = new DenunciaPersona();
-					denunciaPersona.setDenuncia(denuncia);
-					denunciaPersona.setPersona(persona);
-					denunciaPersona.setTipoPersona(new CatalogosValores(Constantes.tipoPersonaId.DENUNCIANTE));
-					//denunciaPersonaDAO.save(denunciaPersona);
-					denuncia.getLstDenunciantes().add(denunciaPersona);
 
+					Persona persona  = personaDAO.findById(denuncianteDTO.getPersonaDTO().getIdPersona()).orElse(null);
+					Boolean existePersona = denunciaPersonaDAO.existsByDenunciaAndPersona(denuncia, persona);
+
+					if(Boolean.FALSE.equals(existePersona)) {
+						DenunciaPersona denunciaPersona = new DenunciaPersona();
+						denunciaPersona.setDenuncia(denuncia);
+						denunciaPersona.setPersona(persona);
+						denunciaPersona.setTipoPersona(new CatalogosValores(Constantes.tipoPersonaId.DENUNCIANTE));
+						//denunciaPersonaDAO.save(denunciaPersona);
+						denuncia.getLstDenunciantes().add(denunciaPersona);
+					}
 				} catch (Exception e) {
 					throw e;
 				}
 			}
 		}
-
-
-
 		// Agregar denunciados
 		if (denunciaDTO.getLstDenunciados() != null && !denunciaDTO.getLstDenunciados().isEmpty()) {
 
@@ -173,25 +169,28 @@ public class DenunciaServiceImpl implements DenunciaService {
 
 					Persona persona  = personaDAO.findById(denunciadoDTO.getPersonaDTO().getIdPersona()).orElse(null);
 
-					DenunciaPersona denunciaPersona = new DenunciaPersona();
-					denunciaPersona.setDenuncia(denuncia);
-					denunciaPersona.setPersona(persona);
-					denunciaPersona.setTipoPersona(new CatalogosValores(Constantes.tipoPersonaId.DENUNCIADO));
-				//	denunciaPersonaDAO.save(denunciaPersona);
-					denuncia.getLstDenunciados().add(denunciaPersona);
+					Boolean existePersona = denunciaPersonaDAO.existsByDenunciaAndPersona(denuncia, persona);
+
+					if(Boolean.FALSE.equals(existePersona)) {
+						DenunciaPersona denunciaPersona = new DenunciaPersona();
+						denunciaPersona.setDenuncia(denuncia);
+						denunciaPersona.setPersona(persona);
+						denunciaPersona.setTipoPersona(new CatalogosValores(Constantes.tipoPersonaId.DENUNCIADO));
+						//denunciaPersonaDAO.save(denunciaPersona);
+						denuncia.getLstDenunciados().add(denunciaPersona);
+					}
+
+
 				} catch (Exception e) {
 
 					throw e;
 				}
 			}
 		}
-
-
+		//denuncia = DenunciaToEntity.INSTANCE.apply(denunciaDTO);
 		denuncia = denunciaDAO.save(denuncia);
 		// Crear el historial
 		this.crearHistorico(denuncia, denuncia.getCdUsuAlta());
-
-		// Convertir la entidad modificada a DTO y retornarla
 		return DenunciaToDTO.INSTANCE.apply(denuncia);
 	}
 
@@ -370,12 +369,11 @@ public class DenunciaServiceImpl implements DenunciaService {
 						nuevoEstado.getIdValor().equals(Constantes.estadoInvestigacion.DESESTIMAR))) {
 
 			denunciaDTO.setEstadoDenuncia(nuevoEstado);
-			denunciaDTO.setFcModifFila(LocalDateTime.now());
+
 		} else if (estadoActual.getIdValor().equals(Constantes.estadoInvestigacion.PRELIMINAR) &&
 				nuevoEstado.getIdValor().equals(Constantes.estadoInvestigacion.PREPARATORIA)) {
 
 			denunciaDTO.setEstadoDenuncia(nuevoEstado);
-			denunciaDTO.setFcModifFila(LocalDateTime.now());
 		}
 
 		return denunciaDTO;
@@ -398,6 +396,7 @@ public class DenunciaServiceImpl implements DenunciaService {
 		denunciaHistorico.setFcHechos(denuncia.getFcHechos());
 		denunciaHistorico.setAuxiliar(denuncia.getAuxiliar());
 		denunciaHistorico.setNumDenuncia(denuncia.getNmDenuncia());
+
 		denunciaHistorico.setFcPlazo(denuncia.getFcPlazo().toLocalDate());
 		denunciaHistorico.setEstadoExpedienteAnterior(denuncia.getEstadoDenuncia());
 		denunciaHistorico.setEstadoExpedienteNuevo(new CatalogosValores(denuncia.getEstadoDenuncia().getIdValor()));
