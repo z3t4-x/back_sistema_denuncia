@@ -20,12 +20,10 @@ public enum DenunciaHistoricoToDTO implements Function<DenunciaHistorico, Denunc
             BeanUtils.copyProperties(entity, dto);
             this.replaceNull(dto, entity);
 
-            if (entity.getEstadoExpedienteAnterior() != null) {
-                dto.setEstadoExpedienteAnterior(CatalogosValoresToDTO.INSTANCE.apply(entity.getEstadoExpedienteAnterior()));
+            if (entity.getEstadoExpediente() != null) {
+                dto.setEstadoExpediente(CatalogosValoresToDTO.INSTANCE.apply(entity.getEstadoExpediente()));
             }
-            if (entity.getEstadoExpedienteNuevo() != null) {
-                dto.setEstadoExpedienteNuevo(CatalogosValoresToDTO.INSTANCE.apply(entity.getEstadoExpedienteNuevo()));
-            }
+
         }
 
         return dto;

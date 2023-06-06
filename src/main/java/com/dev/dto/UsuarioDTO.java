@@ -11,15 +11,20 @@ import java.util.List;
 @Setter
 public class UsuarioDTO extends  AuditoriaDTO implements Serializable {
 
-    private Long idUsuario;
-    private String nombreUsuario;
-    private String contrasenia;
+    private Integer idUsuario;
+    private String nombre;
+    private String apellido;
+    private String cdUsuario;
+    private String password;
+    private String email;
+    private CatalogosValoresDTO mesaParte;
     private CatalogosValoresDTO fiscalia;
     private List<RolDTO> rolesDTO;
 
     public UsuarioDTO() {
         this.rolesDTO = new ArrayList<>();
-        fiscalia =new CatalogosValoresDTO();
+        this.fiscalia =new CatalogosValoresDTO();
+        this.mesaParte =new CatalogosValoresDTO();
     }
 
 }

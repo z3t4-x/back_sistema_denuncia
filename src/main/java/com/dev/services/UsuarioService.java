@@ -1,12 +1,20 @@
 package com.dev.services;
 
+import com.dev.domain.Usuario;
 import com.dev.dto.PersonaDTO;
 import com.dev.dto.UsuarioDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UsuarioService {
 
+
+    Optional<Usuario> obtenerCdUsuario(String nombreUsuario);
+
+    boolean existeCodigoUsuario(String nombreUsuario);
+
+    boolean existeCorreo(String email);
 
     /**
      * registrar

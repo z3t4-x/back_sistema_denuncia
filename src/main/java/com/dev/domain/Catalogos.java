@@ -26,10 +26,7 @@ public class Catalogos {
 	@Column(name= "IT_MANTENIBLE")
 	private String itMantenible;
 
-	@ManyToOne
-	@JoinColumn(name="ID_USUARIO")
-	private  Usuario usuario;
-	
+
 	@Column(name="CD_USU_ALTA")
 	private String cdUsuAlta;
 	

@@ -56,12 +56,8 @@ public class DenunciaHistorico  {
     private LocalDate fcPlazo;
 
     @ManyToOne
-    @JoinColumn(name="ID_ESTADO_ANTERIOR")
-    private CatalogosValores estadoExpedienteAnterior;
-
-    @ManyToOne
-    @JoinColumn(name="ID_ESTADO_NUEVO")
-    private CatalogosValores estadoExpedienteNuevo;
+    @JoinColumn(name="ID_ESTADO_EXPEDIENTE")
+    private CatalogosValores estadoExpediente;
 
     @ManyToOne
     @JoinColumn(name="ID_TIPO_DOCUMENTO", nullable = false)

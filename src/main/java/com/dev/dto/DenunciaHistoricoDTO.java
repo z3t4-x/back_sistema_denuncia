@@ -12,17 +12,18 @@ public class DenunciaHistoricoDTO {
     private Integer idDenunciaHist;
     private String numDenuncia;
     private String cExpediente;
-    private CatalogosValoresDTO estadoExpedienteAnterior;
-    private CatalogosValoresDTO estadoExpedienteNuevo;
+
+    private CatalogosValoresDTO estadoExpediente;
     private Denuncia denunciaDTO;
     private LocalDate fcPlazo;
     private String numDocumento;
     private String descripcion;
     private LocalDate fcIngresoDocumento;
 
+
     public DenunciaHistoricoDTO() {
-        this.estadoExpedienteAnterior = new CatalogosValoresDTO();
-        this.estadoExpedienteNuevo =  new CatalogosValoresDTO();
+        this.estadoExpediente = new CatalogosValoresDTO();
+
 
     }
 }

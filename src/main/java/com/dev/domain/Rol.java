@@ -17,10 +17,10 @@ public class Rol {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_ROL")
-    private Long idRol;
+    private Integer idRol;
 
-    @Column(name = "NOMBRE_ROL")
-    private String nombreRol;
+    @Column(name = "ROL_NOMBRE")
+    private String rolNombre;
 
     @ManyToMany(mappedBy = "roles")
     private List<Usuario> usuarios;

@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+
 @Entity
 @Table(name="PERSONA")
 public class Persona {
@@ -94,6 +95,16 @@ public class Persona {
 	@Column(name="FC_BAJA_FILA")
 	private LocalDateTime fcBajaFila;
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Persona persona = (Persona) o;
+		return Objects.equals(idPersona, persona.idPersona);
+	}
 
-
+	@Override
+	public int hashCode() {
+		return Objects.hash(idPersona);
+	}
 }

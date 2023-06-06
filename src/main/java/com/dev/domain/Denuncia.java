@@ -8,10 +8,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.*;
 
@@ -19,7 +16,6 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 @Entity
 @Table(name="DENUNCIA")
 public class Denuncia {
@@ -70,8 +66,8 @@ public class Denuncia {
 	private  String nmExpedienteInvPreliminar;
 
 	@ManyToOne
-	@JoinColumn(name="ID_USUARIO")
-	private  Usuario usuario;
+	@JoinColumn(name="ID_INVESTIGADOR")
+	private  Usuario investigador;
 
 
 	
@@ -95,7 +91,7 @@ public class Denuncia {
 	//@JsonIgnoreProperties({"denuncia", "hibernateLazyInitalizer", "handler"})
 	//@JsonIgnoreProperties({"denuncia", "lstDenunciantes"})
 	@JsonBackReference
-	@OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<DenunciaPersona> lstDenunciantes = new HashSet<>();
 
 
@@ -103,7 +99,7 @@ public class Denuncia {
 	//@JsonIgnoreProperties({"denuncia", "hibernateLazyInitalizer", "handler"})
 	//@JsonIgnoreProperties({"denuncia", "lstDenunciados"})
 	@JsonBackReference
-	@OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<DenunciaPersona> lstDenunciados = new HashSet<>();
 
 
@@ -125,5 +121,16 @@ public class Denuncia {
 	@Column(name="FC_BAJA_FILA")
 	private LocalDateTime fcBajaFila;
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Denuncia denuncia = (Denuncia) o;
+		return Objects.equals(idDenuncia, denuncia.idDenuncia);
+	}
 
+	@Override
+	public int hashCode() {
+		return Objects.hash(idDenuncia);
+	}
 }

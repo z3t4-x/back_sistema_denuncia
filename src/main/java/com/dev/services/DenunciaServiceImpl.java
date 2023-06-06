@@ -11,12 +11,15 @@ import com.dev.domain.*;
 import com.dev.dto.CatalogosValoresDTO;
 import com.dev.dto.DenunciaDTO;
 import com.dev.dto.DenunciaPersonaDTO;
+import com.dev.dto.UsuarioDTO;
 import com.dev.dto.converters.*;
 import com.dev.utils.Constantes;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +47,9 @@ public class DenunciaServiceImpl implements DenunciaService {
 	@Autowired
 	private DenunciaHistoricoDAO denunciaHistoricoDAO;
 
+	@Autowired
+	private  UsuarioDAO usuarioDAO;
+
 	/**
 	 *
 	 */
@@ -53,6 +59,10 @@ public class DenunciaServiceImpl implements DenunciaService {
 
 		// Guarda la denuncia
 		denunciaDTO = this.guardarDenuncia(denunciaDTO);
+		//TODO pendiente por el front (USUARIO - investigador)
+		UsuarioDTO usuarioDTO =  new UsuarioDTO();
+		usuarioDTO.setIdUsuario(1);
+		denunciaDTO.setInvestigador(usuarioDTO);
 
 		Denuncia denuncia = DenunciaToEntity.INSTANCE.apply(denunciaDTO);
 
@@ -67,19 +77,16 @@ public class DenunciaServiceImpl implements DenunciaService {
 				try {
 					//Persona persona = PersonaToEntity.INSTANCE.apply(denuncianteDTO.getPersonaDTO());
 					Persona persona  = personaDAO.findById(denuncianteDTO.getPersonaDTO().getIdPersona()).orElse(null);
-
+					DenunciaPersona denunciaPersona = new DenunciaPersona(denuncia, persona, new CatalogosValores(Constantes.tipoPersonaId.DENUNCIANTE));
 					//DenunciaPersonaPK denunciaPersonaPK =  new DenunciaPersonaPK();
-					DenunciaPersona denunciaPersona = new DenunciaPersona();
-
 					//denunciaPersonaPK.setIdDenunciaPK(denuncia.getIdDenuncia());
 					//denunciaPersonaPK.setIdPersonaPK(persona.getIdPersona());
 					//denunciaPersona.setDenunciaPersonaPK(denunciaPersonaPK);
-					denunciaPersona.setDenuncia(denuncia);
-					denunciaPersona.setPersona(persona);
-					denunciaPersona.setTipoPersona(new CatalogosValores(Constantes.tipoPersonaId.DENUNCIANTE));
-
-
+//					denunciaPersona.setDenuncia(denuncia);
+//					denunciaPersona.setPersona(persona);
+//					denunciaPersona.setTipoPersona(new CatalogosValores(Constantes.tipoPersonaId.DENUNCIANTE));
 					//denunciaPersonaDAO.save(denunciaPersona);
+
 					denuncia.getLstDenunciantes().add(denunciaPersona);
 
 				} catch (Exception e) {
@@ -92,18 +99,17 @@ public class DenunciaServiceImpl implements DenunciaService {
 
 			for (DenunciaPersonaDTO denunciadoDTO : denunciaDTO.getLstDenunciados()) {
 				try {
-
 					//Persona persona = PersonaToEntity.INSTANCE.apply(denunciadoDTO.getPersonaDTO());
 					Persona persona  = personaDAO.findById(denunciadoDTO.getPersonaDTO().getIdPersona()).orElse(null);
+					DenunciaPersona denunciaPersona = new DenunciaPersona(denuncia, persona,new CatalogosValores(Constantes.tipoPersonaId.DENUNCIADO) );
 
 					//DenunciaPersonaPK denunciaPersonaPK =  new DenunciaPersonaPK();
-					DenunciaPersona denunciaPersona = new DenunciaPersona();
 					//denunciaPersonaPK.setIdDenunciaPK(denuncia.getIdDenuncia());
 					//denunciaPersonaPK.setIdPersonaPK(denunciadoDTO.getPersonaDTO().getIdPersona());
 					//denunciaPersona.setDenunciaPersonaPK(denunciaPersonaPK);
-					denunciaPersona.setDenuncia(denuncia);
-					denunciaPersona.setPersona(persona);
-					denunciaPersona.setTipoPersona(new CatalogosValores(Constantes.tipoPersonaId.DENUNCIADO));
+//					denunciaPersona.setDenuncia(denuncia);
+//					denunciaPersona.setPersona(persona);
+//					denunciaPersona.setTipoPersona(new CatalogosValores(Constantes.tipoPersonaId.DENUNCIADO));
 
 					//denunciaPersonaDAO.save(denunciaPersona);
 					denuncia.getLstDenunciados().add(denunciaPersona);
@@ -203,8 +209,6 @@ public class DenunciaServiceImpl implements DenunciaService {
 
 		List<Denuncia> lstDenuncias = denunciaDAO.findByEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(Constantes.codigoInvestigacion.DENUNCIA);
 
-		//List<Denuncia> lstDenuncias = denunciaDAO.findAll();
-
 		return lstDenuncias.stream()
 				.map(DenunciaToDTO.INSTANCE::apply)
 				.collect(Collectors.toList());
@@ -251,15 +255,6 @@ public class DenunciaServiceImpl implements DenunciaService {
 			return DenunciaToDTO.INSTANCE.apply(denuncia);
 		}
 
-
-
-/*	public DenunciaDTO lstPorId(Integer id) throws Exception {
-		return denunciaDAO.findById(id)
-				.map(DenunciaToDTO.INSTANCE::apply)
-				.orElse(null);
-	}*/
-
-
 	/**
 	 *
 	 */
@@ -278,18 +273,6 @@ public class DenunciaServiceImpl implements DenunciaService {
 		LocalDate fecha = LocalDate.now();
 		Integer anio = fecha.getYear();
 		String codigoDenuncia = "";
-/*
-		List<CatalogosValoresDTO> catalogosValoresEstado = catValoresDAO.findByCatalogoDsNombre(Constantes.nombreCatalogos.CATALOGO_ESTADO_DENUNCIA)
-				.stream()
-				.map(CatalogosValoresToDTO.INSTANCE::apply)
-				.collect(Collectors.toList());
-		CatalogosValores codigoDen = catValoresDAO.findById(denunciaDTO.getEstadoDenuncia().getIdValor()).
-				orElseThrow(() -> new IllegalArgumentException("No se encontró el estado de denuncia con ID: " + denunciaDTO.getEstadoDenuncia().getIdValor()));
-*/
-
-	//	if(Objects.nonNull(catalogosValoresEstado)){
-
-		//	for (CatalogosValoresDTO catValorEstado: catalogosValoresEstado) {
 
 				if(Constantes.estadoInvestigacion.DENUNCIA.equals(denunciaDTO.getEstadoDenuncia().getIdValor())){
 					codigoDenuncia = "DEN";
@@ -300,8 +283,6 @@ public class DenunciaServiceImpl implements DenunciaService {
 				if(Constantes.estadoInvestigacion.PREPARATORIA.equals(denunciaDTO.getEstadoDenuncia().getIdValor())){
 					codigoDenuncia = "PRE";
 				}
-		//	}
-	//	}
 
 		String numDenuncia = String.format("%03d", this.denunciaDAO.count() + 1);
 
@@ -330,6 +311,15 @@ public class DenunciaServiceImpl implements DenunciaService {
 	 * @param denunciaDTO
 	 */
 	private DenunciaDTO guardarDenuncia(DenunciaDTO denunciaDTO) {
+
+		UsuarioPrincipal usuarioPrincipal = getUsuarioPrincipalAutenticado();
+		String cdUsuario = usuarioPrincipal.getUsername();
+
+		Optional<Usuario> usuarioOptional = usuarioDAO.findByCdUsuario(cdUsuario);
+		if (usuarioOptional.isPresent()) {
+			Usuario usuario = usuarioOptional.get();
+
+
 		LocalDateTime fechaAltaDenuncia = LocalDateTime.now();
 		LocalDateTime fechaPlazoRevision = fechaAltaDenuncia.plusDays(15);
 
@@ -339,17 +329,25 @@ public class DenunciaServiceImpl implements DenunciaService {
 		CatalogosValoresDTO estadoDenunciaDTO = new CatalogosValoresDTO();
 		estadoDenunciaDTO.setIdValor(5);
 		denunciaDTO.setEstadoDenuncia(estadoDenunciaDTO);
-		//TODO
-		// que pediente revisar de que forma obternel la fiscalía al momento de iniciar sesión
-		//denunciaDTO.setFiscalia(denunciaDTO.getFiscalia());
-		denunciaDTO.setFiscalia(new CatalogosValoresDTO(39));
 
-		//TODO
-		// que pediente revisar de que forma obternel la mesa de parte al momento de iniciar sesión
-		denunciaDTO.setMesaParte(new CatalogosValoresDTO(41));
+		CatalogosValoresDTO fiscalia = new CatalogosValoresDTO();
+		fiscalia.setIdValor(usuario.getFiscalia().getIdValor());
+		denunciaDTO.setFiscalia(fiscalia);
+		denunciaDTO.setCdUsuAlta(usuario.getCdUsuario());
+		CatalogosValoresDTO mesaPartes =  new CatalogosValoresDTO();
+		mesaPartes.setIdValor(usuario.getMesaParte().getIdValor());
+		denunciaDTO.setMesaParte(mesaPartes);
+			//TODO
+			// que pediente a eliminar el campo auxiliar
+		CatalogosValoresDTO auxiliar = new CatalogosValoresDTO();
+		auxiliar.setIdValor(18);
+		denunciaDTO.setAuxiliar(auxiliar);
 		String numDenuncia = this.generarCodigoDenuncia(denunciaDTO);
 		denunciaDTO.setNmDenuncia(numDenuncia);
-
+		}
+		else {
+			throw new ServiceException("No se encontró un usuario con el código " + cdUsuario);
+		}
 /*		Denuncia denunciaEntity = DenunciaToEntity.INSTANCE.apply(denunciaDTO);
 		Denuncia denunciaGuardada = denunciaDAO.save(denunciaEntity);*/
 		return denunciaDTO; //DenunciaToDTO.INSTANCE.apply(denunciaGuardada);
@@ -394,12 +392,11 @@ public class DenunciaServiceImpl implements DenunciaService {
 		denunciaHistorico.setFiscalia(denuncia.getFiscalia());
 		denunciaHistorico.setTipoDelito(denuncia.getTipoDelito());
 		denunciaHistorico.setFcHechos(denuncia.getFcHechos());
-		denunciaHistorico.setAuxiliar(denuncia.getAuxiliar());
+		//denunciaHistorico.setAuxiliar(denuncia.getAuxiliar());
 		denunciaHistorico.setNumDenuncia(denuncia.getNmDenuncia());
 
 		denunciaHistorico.setFcPlazo(denuncia.getFcPlazo().toLocalDate());
-		denunciaHistorico.setEstadoExpedienteAnterior(denuncia.getEstadoDenuncia());
-		denunciaHistorico.setEstadoExpedienteNuevo(new CatalogosValores(denuncia.getEstadoDenuncia().getIdValor()));
+		denunciaHistorico.setEstadoExpediente(denuncia.getEstadoDenuncia());
 		denunciaHistorico.setTipoDocumento(denuncia.getTipoDocumento());
 		denunciaHistorico.setFcIngresoDocumento(denuncia.getFcIngresoDocumento());
 		denunciaHistorico.setDescripcion(denuncia.getDsDescripcion());
@@ -425,49 +422,14 @@ public class DenunciaServiceImpl implements DenunciaService {
 
 
 
-
-
-
-/*		else if (estadoActual.getIdValor().equals(Constantes.estadoInvestigacion.PREPARATORIA) &&
-				nuevoEstado.getIdValor().equals(Constantes.estadoInvestigacion.ASIGNADA)) {
-			denunciaDTO.setEstadoDenuncia(nuevoEstado);
-			denunciaDTO.setFcModifFila(LocalDateTime.now());
-		} else if (estadoActual.getIdValor().equals(Constantes.estadoInvestigacion.ASIGNADA) &&
-				nuevoEstado.getIdValor().equals(Constantes.estadoInvestigacion.INVESTIGACION)) {
-			denunciaDTO.setEstadoDenuncia(nuevoEstado);
-			denunciaDTO.setFcModifFila(LocalDateTime.now());
+	private UsuarioPrincipal getUsuarioPrincipalAutenticado() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.getPrincipal() instanceof UsuarioPrincipal) {
+			return (UsuarioPrincipal) authentication.getPrincipal();
 		} else {
-			throw new Exception("El cambio de estado no es válido.");
-		}*/
-
-
-	/***
-	 * método para actualizar la denuncia
-	 * @param denunciaExistente
-	 * @param denunciaNueva
-	 */
-/*	private void actualizarAtributosDenuncia(Denuncia denunciaExistente, Denuncia denunciaNueva) {
-
-		denunciaExistente.setFcAltaDenuncia(denunciaNueva.getFcAltaDenuncia());
-		denunciaExistente.setFiscalia(denunciaNueva.getFiscalia());
-		denunciaExistente.setTipoDelito(denunciaNueva.getTipoDelito());
-		denunciaExistente.setFcHechos(denunciaNueva.getFcHechos());
-		denunciaExistente.setAuxiliar(denunciaNueva.getAuxiliar());
-		denunciaExistente.setNmDenuncia(denunciaNueva.getNmDenuncia());
-		denunciaExistente.setFcPlazo(denunciaNueva.getFcPlazo());
-		denunciaExistente.setEstadoDenuncia(denunciaNueva.getEstadoDenuncia());
-		denunciaExistente.setMesaParte(denunciaNueva.getMesaParte());
-		denunciaExistente.setDsDescripcion(denunciaNueva.getDsDescripcion());
-		denunciaExistente.setTipoDocumento(denunciaNueva.getTipoDocumento());
-		denunciaExistente.setFcIngresoDocumento(denunciaNueva.getFcIngresoDocumento());
-		denunciaExistente.setNmDocumento(denunciaNueva.getNmDocumento());
-		denunciaExistente.setNmExpedientePreparatoria(denunciaNueva.getNmExpedientePreparatoria());
-		denunciaExistente.setNmExpedienteInvPreliminar(denunciaNueva.getNmExpedienteInvPreliminar());
-
-
-	}*/
-
-
+			throw new ServiceException("No se pudo obtener el usuario autenticado.");
+		}
+	}
 
 
 }

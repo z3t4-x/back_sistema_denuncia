@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class RolDTO extends AuditoriaDTO implements Serializable {
 
-    private Long idRol;
+    private Integer idRol;
     private String nombreRol;
     private List<UsuarioDTO> usuariosDTO;
 

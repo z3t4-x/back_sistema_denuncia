@@ -1,9 +1,0 @@
-
-r
-java:S1128"URemove this unused import 'org.springframework.boot.autoconfigure.domain.EntityScan'.(›Ù¯8ÿ›®‡ı0
-s
-java:S1128"QRemove this unused import 'org.springframework.context.annotation.Configuration'.(¬²Úäşÿÿÿÿ8ÃÆ†ı0
-ƒ
-java:S1128"aRemove this unused import 'org.springframework.data.jpa.repository.config.EnableJpaRepositories'.(²œ˜üÿÿÿÿ8ÿ›®‡ı0
-€
-java:S1128"cRemove this unused import 'org.springframework.transaction.annotation.EnableTransactionManagement'.(‘Ó¼8ÄÆ†ı0

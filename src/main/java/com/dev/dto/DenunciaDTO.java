@@ -1,6 +1,7 @@
 package com.dev.dto;
 
 import com.dev.domain.Denuncia;
+import com.dev.domain.Usuario;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +19,7 @@ public class DenunciaDTO extends AuditoriaDTO implements Serializable {
     private CatalogosValoresDTO fiscalia;
     private CatalogosValoresDTO tipoDelito;
     private LocalDate fcHechos;
-    private CatalogosValoresDTO auxiliar;
+    private UsuarioDTO investigador;
     private String nmDenuncia;
     private LocalDateTime fcPlazo;
     private CatalogosValoresDTO estadoDenuncia;
@@ -32,6 +33,8 @@ public class DenunciaDTO extends AuditoriaDTO implements Serializable {
 
     private  String nmExpedienteInvPreliminar;
 
+    private CatalogosValoresDTO auxiliar;
+
     private List<DenunciaPersonaDTO> lstDenunciantes;
     private List<DenunciaPersonaDTO> lstDenunciados;
 
@@ -40,9 +43,10 @@ public class DenunciaDTO extends AuditoriaDTO implements Serializable {
         super();
         this.fiscalia = new CatalogosValoresDTO();
         this.tipoDelito = new CatalogosValoresDTO();
-        this.auxiliar = new CatalogosValoresDTO();
+        this.investigador = new UsuarioDTO();
         this.estadoDenuncia = new CatalogosValoresDTO();
         this.mesaParte = new CatalogosValoresDTO();
+        this.auxiliar = new CatalogosValoresDTO();
         this.tipoDocumento = new CatalogosValoresDTO();
         this.lstDenunciantes = new ArrayList<>();
         this.lstDenunciados = new ArrayList<>();

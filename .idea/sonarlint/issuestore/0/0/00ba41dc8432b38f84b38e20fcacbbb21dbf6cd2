@@ -1,12 +1,0 @@
-
-\
-java:S22598"AA "NullPointerException" could be thrown; "dto" is nullable here.(ÀµÅşÿÿÿÿ
-N
-java:S1128"3Remove this unused import 'com.dev.domain.Usuario'.(Öéµ‰üÿÿÿÿ
-N
-java:S1128"3Remove this unused import 'com.dev.dto.UsuarioDTO'.(¼¹åøÿÿÿÿ
-V
-java:S1128
-"@Remove this unused import 'com.dev.dto.converters.UsuarioToDTO'.(çÉ‚Ø
-Y
-java:S1128"CRemove this unused import 'com.dev.dto.converters.UsuarioToEntity'.(áıÍ

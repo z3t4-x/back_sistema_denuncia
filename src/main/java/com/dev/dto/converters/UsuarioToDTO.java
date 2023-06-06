@@ -21,6 +21,13 @@ public enum UsuarioToDTO implements Function<Usuario, UsuarioDTO> {
                         .map(RolToDTO.INSTANCE::apply)
                         .collect(Collectors.toList()));
             }
+            if (entity.getFiscalia() != null) {
+                dto.setFiscalia(CatalogosValoresToDTO.INSTANCE.apply(entity.getFiscalia()));
+            }
+
+            if (entity.getMesaParte() != null) {
+                dto.setMesaParte(CatalogosValoresToDTO.INSTANCE.apply(entity.getMesaParte()));
+            }
         }
         return dto;
     }

@@ -1,13 +1,12 @@
 package com.dev.services;
 
 import com.dev.dao.UsuarioDAO;
-import com.dev.domain.CatalogosValores;
 import com.dev.domain.Usuario;
-import com.dev.dto.CatalogosValoresDTO;
 import com.dev.dto.UsuarioDTO;
 import com.dev.dto.converters.*;
 import com.dev.exception.ModeloNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,11 +14,30 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class UsuarioServiceImpl implements UsuarioService {
 
 
      @Autowired
     private UsuarioDAO usuarioDAO;
+
+
+
+     @Override
+    public Optional<Usuario> obtenerCdUsuario(String nombreUsuario){
+        return usuarioDAO.findByCdUsuario(nombreUsuario);
+    }
+
+    @Override
+    public boolean existeCodigoUsuario(String nombreUsuario){
+        return usuarioDAO.existsByCdUsuario(nombreUsuario);
+    }
+
+    @Override
+    public boolean existeCorreo(String email){
+        return usuarioDAO.existsByEmail(email);
+    }
+
 
     /**
      *

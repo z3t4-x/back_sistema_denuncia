@@ -11,6 +11,7 @@ import com.dev.dto.converters.UsuarioToDTO;
 import com.dev.dto.converters.UsuarioToEntity;
 import com.dev.exception.ModeloNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Service
 public class RolServiceImpl implements RolService {
 
     @Autowired
@@ -47,6 +49,8 @@ public class RolServiceImpl implements RolService {
         Optional<Rol> rol = this.rolDAO.findById(id);
         return rol.map(RolToDTO.INSTANCE::apply).orElse(null);
     }
+
+
 
     @Override
     public void eliminar(Integer id) throws Exception {

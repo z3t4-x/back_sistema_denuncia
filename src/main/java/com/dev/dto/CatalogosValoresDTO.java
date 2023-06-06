@@ -38,4 +38,6 @@ public class CatalogosValoresDTO extends AuditoriaDTO implements Serializable {
          this.idValor = idValor;
          this.catalogoDTO = new CatalogosDTO();
      }
+
+
 }

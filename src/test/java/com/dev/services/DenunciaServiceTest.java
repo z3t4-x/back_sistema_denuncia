@@ -66,7 +66,7 @@ public class DenunciaServiceTest {
         dto.setFcHechos(fcHechos);
         CatalogosValoresDTO auxiliar = new CatalogosValoresDTO();
         auxiliar.setIdValor(18);
-        dto.setAuxiliar(auxiliar);
+       // dto.setAuxiliar(auxiliar);
         CatalogosValoresDTO mesaPartes =  new CatalogosValoresDTO();
         mesaPartes.setIdValor(41);
         dto.setMesaParte(mesaPartes);

@@ -1,13 +1,17 @@
 package com.dev.domain;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "USUARIO")
 public class Usuario {
@@ -15,7 +19,7 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_USUARIO")
-    private Long idUsuario;
+    private Integer idUsuario;
 
     @Column(name = "NOMBRE")
     private String nombre;
@@ -23,11 +27,11 @@ public class Usuario {
     @Column(name = "APELLIDO")
     private String apellido;
 
-    @Column(name = "USUARIO", unique = true)
-    private  String usuario;
+    @Column(name = "CD_USUARIO", unique = true)
+    private  String cdUsuario;
 
-    @Column(name = "CONTRASENIA")
-    private String contrasenia;
+    @Column(name = "PASSWORD")
+    private String password;
 
     @Email
     @Column(name = "EMAIL", unique = true)
@@ -67,6 +71,16 @@ public class Usuario {
 
     @Column(name="FC_BAJA_FILA")
     private LocalDateTime fcBajaFila;
+
+    public Usuario() {
+    }
+
+    public Usuario(@NotNull String nombre, @NotNull String cdUsuario, @NotNull String email, @NotNull String password) {
+        this.nombre = nombre;
+        this.cdUsuario = cdUsuario;
+        this.email = email;
+        this.password = password;
+    }
 
     // constructors, getters and setters
 }

@@ -29,8 +29,8 @@ public enum DenunciaToEntity implements Function<DenunciaDTO, Denuncia> {
             if (dto.getTipoDelito() != null) {
                 entity.setTipoDelito(CatalogosValoresToEntity.INSTANCE.apply(dto.getTipoDelito()));
             }
-            if (dto.getAuxiliar() != null) {
-                entity.setAuxiliar(CatalogosValoresToEntity.INSTANCE.apply(dto.getAuxiliar()));
+            if (dto.getInvestigador() != null) {
+                entity.setInvestigador(UsuarioToEntity.INSTANCE.apply(dto.getInvestigador()));
             }
             if (dto.getEstadoDenuncia() != null) {
                 entity.setEstadoDenuncia(CatalogosValoresToEntity.INSTANCE.apply(dto.getEstadoDenuncia()));
@@ -40,6 +40,10 @@ public enum DenunciaToEntity implements Function<DenunciaDTO, Denuncia> {
             }
             if (dto.getTipoDocumento() != null) {
                 entity.setTipoDocumento(CatalogosValoresToEntity.INSTANCE.apply(dto.getTipoDocumento()));
+            }
+
+            if (dto.getAuxiliar() != null) {
+                entity.setAuxiliar(CatalogosValoresToEntity.INSTANCE.apply(dto.getAuxiliar()));
             }
 
             // Agregar las listas de denunciantes y denunciados

@@ -16,16 +16,24 @@ import java.util.Objects;
 @AllArgsConstructor
 @Table(name = "DENUNCIA_PERSONA")
 @Entity
-@IdClass(DenunciaPersonaPK.class)
+//@IdClass(DenunciaPersonaPK.class)
 public class DenunciaPersona implements Serializable {
-	@Id
+
+	@EmbeddedId
+	private DenunciaPersonaPK id;
+
+
+	//@Id
 	//@JsonIgnoreProperties({"lstDenunciantes", "lstDenunciados"})
+	@MapsId("idDenuncia")
 	@JsonManagedReference
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_denuncia", nullable = false)
 	private Denuncia denuncia;
-	@Id
+
+	//@Id
 	//@JsonIgnoreProperties("lstDenunciasPersonas")
+	@MapsId("idPersona")
 	@JsonManagedReference
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_persona", nullable = false)
@@ -34,8 +42,16 @@ public class DenunciaPersona implements Serializable {
 	@JoinColumn(name = "ID_TIPO_PERSONA")
 	private CatalogosValores tipoPersona;
 
+	public DenunciaPersona(Denuncia denuncia, Persona persona, CatalogosValores tipoPersona) {
+		this.id = new DenunciaPersonaPK(denuncia.getIdDenuncia(), persona.getIdPersona());
+		this.denuncia = denuncia;
+		this.persona = persona;
+		this.tipoPersona = tipoPersona;
+	}
 
-/*	@EmbeddedId
+
+
+	/*	@EmbeddedId
 	private DenunciaPersonaPK denunciaPersonaPK;
 
 	@JsonBackReference
