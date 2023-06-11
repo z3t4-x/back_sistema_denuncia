@@ -2,17 +2,23 @@ package com.dev.controller;
 
 
 import java.util.List;
+import java.util.Objects;
 
 import com.dev.domain.DenunciaPersona;
 import com.dev.dto.DenunciaDTO;
 
+import com.dev.dto.UsuarioDTO;
 import com.dev.services.DenunciaService;
 import com.dev.services.PersonaService;
+import com.dev.services.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -22,9 +28,6 @@ public class DenunciaController {
 
 	@Autowired
 	private DenunciaService service;
-
-	@Autowired
-	private PersonaService personaService;
 
 	/**
 	 * listar todo
@@ -80,8 +83,17 @@ public class DenunciaController {
 	@PutMapping
 	public ResponseEntity<DenunciaDTO> modificarDenuncia(@RequestBody DenunciaDTO denunciaDTO) {
 		try {
-			DenunciaDTO denunciaModificada = service.modificar(denunciaDTO);
+
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+			if( Objects.isNull(userDetails) ){
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+			}
+
+			DenunciaDTO denunciaModificada = service.modificar(denunciaDTO, userDetails.getUsername());
 			return ResponseEntity.ok(denunciaModificada);
+
 		} catch (Exception e) {
 			log.info("==========> MODIFICACIÓN ==> {}" , e.getMessage());
 			e.printStackTrace();

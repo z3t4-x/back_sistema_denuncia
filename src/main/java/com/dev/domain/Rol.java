@@ -1,5 +1,6 @@
 package com.dev.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,6 +23,7 @@ public class Rol {
     @Column(name = "ROL_NOMBRE")
     private String rolNombre;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "roles")
     private List<Usuario> usuarios;
 

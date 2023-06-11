@@ -48,11 +48,10 @@ public enum DenunciaToEntity implements Function<DenunciaDTO, Denuncia> {
 
             // Agregar las listas de denunciantes y denunciados
             // Agregar los denunciantes y denunciados como conjuntos
-/*            if (dto.getLstDenunciantes() != null) {
+           if (dto.getLstDenunciantes() != null) {
                 Set<DenunciaPersona> denunciantes = new HashSet<>();
                 for (DenunciaPersonaDTO denuncianteDTO : dto.getLstDenunciantes()) {
                     DenunciaPersona denunciante = DenunciaPersonaToEntity.INSTANCE.apply(denuncianteDTO);
-                    denunciante.setDenuncia(entity);
                     denunciantes.add(denunciante);
                 }
                 entity.setLstDenunciantes(denunciantes);
@@ -61,11 +60,11 @@ public enum DenunciaToEntity implements Function<DenunciaDTO, Denuncia> {
                 Set<DenunciaPersona> denunciados = new HashSet<>();
                 for (DenunciaPersonaDTO denunciadoDTO : dto.getLstDenunciados()) {
                     DenunciaPersona denunciado = DenunciaPersonaToEntity.INSTANCE.apply(denunciadoDTO);
-                    denunciado.setDenuncia(entity);
+                    //denunciado.setDenuncia(entity);
                     denunciados.add(denunciado);
                 }
                 entity.setLstDenunciados(denunciados);
-            }*/
+            }
         }
 
         return entity;

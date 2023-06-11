@@ -14,4 +14,6 @@ public interface ICatalogosValoresDAO extends JpaRepository<CatalogosValores, In
 
 	List<CatalogosValores> findByCatalogoDsNombre(String nombreCatalogo);
 
+	CatalogosValores findByCdCodigoAndCatalogo(String cdCodigo, Catalogos catalogos);
+
 }

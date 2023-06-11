@@ -16,9 +16,7 @@ public enum DenunciaPersonaToDTO implements Function<DenunciaPersona, DenunciaPe
 
         if (entity != null) {
             BeanUtils.copyProperties(entity, dto);
-            if (entity.getDenuncia() != null) {
-                dto.setDenunciaDTO(DenunciaToDTO.INSTANCE.apply(entity.getDenuncia()));
-            }
+
             if (entity.getPersona() != null) {
                 dto.setPersonaDTO(PersonaToDTO.INSTANCE.apply(entity.getPersona()));
             }

@@ -10,9 +10,6 @@
         <module name="vocalia" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="vocalia" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

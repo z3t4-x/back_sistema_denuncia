@@ -2,6 +2,7 @@ package com.dev.dto;
 
 import com.dev.domain.Denuncia;
 import com.dev.domain.Usuario;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,13 +29,9 @@ public class DenunciaDTO extends AuditoriaDTO implements Serializable {
     private CatalogosValoresDTO tipoDocumento;
     private LocalDate fcIngresoDocumento;
     private String nmDocumento;
-
     private  String nmExpedientePreparatoria;
-
     private  String nmExpedienteInvPreliminar;
-
     private CatalogosValoresDTO auxiliar;
-
     private List<DenunciaPersonaDTO> lstDenunciantes;
     private List<DenunciaPersonaDTO> lstDenunciados;
 

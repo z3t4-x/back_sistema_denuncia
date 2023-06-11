@@ -1,5 +1,6 @@
 package com.dev.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,6 +47,7 @@ public class Usuario {
     @JoinColumn(name="ID_MESA_PARTE")
     private CatalogosValores mesaParte;
 
+    @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "USUARIO_ROL",

@@ -16,11 +16,6 @@ public enum DenunciaHistoricoToEntity implements Function<DenunciaHistoricoDTO, 
 
         if (dto != null) {
             BeanUtils.copyProperties(dto, entity);
-
-            if (dto.getEstadoExpediente() != null) {
-                entity.setEstadoExpediente(CatalogosValoresToEntity.INSTANCE.apply(dto.getEstadoExpediente()));
-            }
-
         }
 
         return entity;

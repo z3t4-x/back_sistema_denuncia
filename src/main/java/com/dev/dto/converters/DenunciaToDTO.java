@@ -47,19 +47,23 @@ public enum DenunciaToDTO implements Function<Denuncia, DenunciaDTO> {
                 dto.setAuxiliar(CatalogosValoresToDTO.INSTANCE.apply(entity.getAuxiliar()));
             }
 
-/*          if (entity.getLstDenunciantes() != null) {
+             if (entity.getLstDenunciantes() != null && !entity.getLstDenunciantes().isEmpty()) {
                 List<DenunciaPersonaDTO> lstDenunciantesDTO = entity.getLstDenunciantes().stream()
                         .map(denunciaPersona -> DenunciaPersonaToDTO.INSTANCE.apply(denunciaPersona))
                         .collect(Collectors.toList());
                 dto.setLstDenunciantes(lstDenunciantesDTO);
-            }
+            }else{
+                 dto.setLstDenunciantes(null);
+             }
 
-            if (entity.getLstDenunciados() != null) {
+            if (entity.getLstDenunciados() != null && !entity.getLstDenunciados().isEmpty()) {
                 List<DenunciaPersonaDTO> lstDenunciadosDTO = entity.getLstDenunciados().stream()
                         .map(denunciaPersona -> DenunciaPersonaToDTO.INSTANCE.apply(denunciaPersona))
                         .collect(Collectors.toList());
                 dto.setLstDenunciados(lstDenunciadosDTO);
-            }*/
+            }else{
+                dto.setLstDenunciados(null);
+            }
 
         }
 

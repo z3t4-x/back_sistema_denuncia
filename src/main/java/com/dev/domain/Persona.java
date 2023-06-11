@@ -73,9 +73,9 @@ public class Persona {
 	//@JsonBackReference
 	//@JsonBackReference
 	//@JsonIgnoreProperties({"persona", "lstDenunciasPersonas"})
-	@JsonBackReference
-	@OneToMany(mappedBy = "persona", fetch = FetchType.EAGER)
-	private Set<DenunciaPersona> lstDenunciasPersonas;
+	//@JsonBackReference
+	//@OneToMany(mappedBy = "persona")
+	//private Set<DenunciaPersona> lstDenunciasPersonas;
 
 	@Column(name="CD_USU_ALTA")
 	private String cdUsuAlta;

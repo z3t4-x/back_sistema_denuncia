@@ -18,12 +18,12 @@ public class DenunciaPersonaServiceImpl implements  DenunciaPersonaService{
     @Override
     public List<DenunciaPersona> obtenerDenunciantes(Denuncia denuncia) {
         String cdCodigo =  "DNCTE";
-        return denunciaPersonaDAO.findByDenunciaAndTipoPersonaCdCodigo(denuncia, cdCodigo);
+        return denunciaPersonaDAO.findByIdDenunciaAndTipoPersonaCdCodigo(denuncia.getIdDenuncia(), cdCodigo);
     }
 
     @Override
     public List<DenunciaPersona> obtenerDenunciados(Denuncia denuncia) {
         String cdCodigo =  "DNCDO";
-        return denunciaPersonaDAO.findByDenunciaAndTipoPersonaCdCodigo(denuncia, cdCodigo);
+        return denunciaPersonaDAO.findByIdDenunciaAndTipoPersonaCdCodigo(denuncia.getIdDenuncia(), cdCodigo);
     }
 }

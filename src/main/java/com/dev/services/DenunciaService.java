@@ -27,7 +27,7 @@ public interface DenunciaService {
      * @throws Exception
      */
     @Transactional
-    DenunciaDTO modificar(DenunciaDTO denunciaDTO) throws Exception;
+    DenunciaDTO modificar(DenunciaDTO denunciaDTO, String usuarioOperacion) throws Exception;
 
     /**
      * solo listará la denuncia en estado "denuncia"

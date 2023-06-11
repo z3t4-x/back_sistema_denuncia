@@ -9,14 +9,18 @@ import java.time.LocalDateTime;
 @Data
 public class DenunciaPersonaDTO {
 
-    private DenunciaDTO denunciaDTO;
+    private Integer idDenunciaPersona;
+
+    private Integer idDenuncia;
+
     private PersonaDTO personaDTO;
 
     private CatalogosValoresDTO tipoPersona;
 
+    private String itBaja;
+
     public DenunciaPersonaDTO() {
         super();
-        this.denunciaDTO = new DenunciaDTO();
         this.personaDTO = new PersonaDTO();
         this.tipoPersona = new CatalogosValoresDTO();
     }

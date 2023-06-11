@@ -60,9 +60,10 @@ public class Denuncia {
 	@Column(name="DS_DESCRIPCION")
 	private String dsDescripcion;
 
-
+	@Column(name="NM_EXPEDIENTE_PREPARATORIA")
 	private  String nmExpedientePreparatoria;
 
+	@Column(name="NM_EXPEDIENTE_INV_PRELIMINAR")
 	private  String nmExpedienteInvPreliminar;
 
 	@ManyToOne
@@ -88,18 +89,13 @@ public class Denuncia {
 	private String nmDocumento;
 
 	//@JsonBackReference
-	//@JsonIgnoreProperties({"denuncia", "hibernateLazyInitalizer", "handler"})
-	//@JsonIgnoreProperties({"denuncia", "lstDenunciantes"})
-	@JsonBackReference
-	@OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+	@JoinColumn(name = "ID_DENUNCIA", referencedColumnName = "ID_DENUNCIA")
 	private Set<DenunciaPersona> lstDenunciantes = new HashSet<>();
 
-
 	//@JsonBackReference
-	//@JsonIgnoreProperties({"denuncia", "hibernateLazyInitalizer", "handler"})
-	//@JsonIgnoreProperties({"denuncia", "lstDenunciados"})
-	@JsonBackReference
-	@OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+	@JoinColumn(name = "ID_DENUNCIA", referencedColumnName = "ID_DENUNCIA")
 	private Set<DenunciaPersona> lstDenunciados = new HashSet<>();
 
 

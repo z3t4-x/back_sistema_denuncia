@@ -1,8 +1,6 @@
 package com.dev.dto.converters;
 
-import com.dev.domain.Denuncia;
 import com.dev.domain.DenunciaPersona;
-import com.dev.domain.DenunciaPersonaPK;
 import com.dev.dto.DenunciaPersonaDTO;
 import org.springframework.beans.BeanUtils;
 
@@ -18,9 +16,8 @@ public enum DenunciaPersonaToEntity implements Function<DenunciaPersonaDTO, Denu
 
         if (dto != null) {
             BeanUtils.copyProperties(dto, entity);
-            if (dto.getDenunciaDTO() != null) {
-                entity.setDenuncia(DenunciaToEntity.INSTANCE.apply(dto.getDenunciaDTO()));
-            }
+
+
             if (dto.getPersonaDTO() != null) {
                 entity.setPersona(PersonaToEntity.INSTANCE.apply(dto.getPersonaDTO()));
             }

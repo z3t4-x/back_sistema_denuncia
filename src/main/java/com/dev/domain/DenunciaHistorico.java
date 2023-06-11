@@ -26,28 +26,26 @@ public class DenunciaHistorico  {
     private  Integer idDenunciaHist;
 
 
-     @ManyToOne
-    @JoinColumn(name="ID_DENUNCIA", nullable = true)
-   // @Column(name="id_denuncia")
-    private Denuncia denuncia;
+    @Column(name="ID_DENUNCIA", nullable = false)
+    private Integer idDenuncia;
 
     @Column(name="FC_ALTA_DENUNCIA", nullable = false)
     private LocalDateTime fcAltaDenuncia;
 
-    @ManyToOne
-    @JoinColumn(name="ID_FISCALIA", nullable = true)
-    private CatalogosValores fiscalia;
+    @Column(name="ID_FISCALIA", nullable = false)
+    private Integer idFiscalia;
 
-    @ManyToOne
-    @JoinColumn(name="ID_DELITO")
-    private CatalogosValores tipoDelito;
+    @Column(name="ID_DELITO", nullable = false)
+    private Integer idTipoDelito;
 
     @Column(name="FC_HECHOS")
     private LocalDate fcHechos;
 
-    @ManyToOne
-    @JoinColumn(name="ID_AUXILIAR")
-    private CatalogosValores auxiliar;
+    @Column(name="ID_AUXILIAR")
+    private Integer idAuxiliar;
+
+    @Column(name="ID_INVESTIGADOR")
+    private Integer idInvestigador;
 
     @Column(name="NUM_DENUNCIA")
     private String numDenuncia;
@@ -55,13 +53,11 @@ public class DenunciaHistorico  {
     @Column(name="FC_PLAZO")
     private LocalDate fcPlazo;
 
-    @ManyToOne
-    @JoinColumn(name="ID_ESTADO_EXPEDIENTE")
-    private CatalogosValores estadoExpediente;
+    @Column(name="ID_ESTADO_EXPEDIENTE")
+    private Integer idEstadoExpediente;
 
-    @ManyToOne
-    @JoinColumn(name="ID_TIPO_DOCUMENTO", nullable = false)
-    private CatalogosValores tipoDocumento;
+    @Column(name="ID_TIPO_DOCUMENTO", nullable = false)
+    private Integer idTipoDocumento;
 
     @Column(name="FC_INGRESO_DOCUMENTO", nullable = false)
     private LocalDate fcIngresoDocumento;
