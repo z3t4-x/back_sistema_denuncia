@@ -68,6 +68,8 @@ public class DenunciaServiceImpl implements DenunciaService {
 		// Guarda la denuncia
 		this.prepararDatosDenuncia(denunciaDTO);
 
+		List<DenunciaPersonaDTO> denunciados = null;
+
 		if( !denunciaDTO.getLstDenunciados().isEmpty() ){
 
 			Catalogos catalogo = catalogosDAO.findByDsNombre(Constantes.nombreCatalogos.CATALOGO_TIPO_DENUNCIANTE);
@@ -76,7 +78,11 @@ public class DenunciaServiceImpl implements DenunciaService {
 			for( DenunciaPersonaDTO denunciaPersonaDTO : denunciaDTO.getLstDenunciados() ){
 				denunciaPersonaDTO.setTipoPersona(CatalogosValoresToDTO.INSTANCE.apply(catalogoValores));
 			}
+
+			denunciados = denunciaDTO.getLstDenunciados().stream().filter(x->x.getItBaja()==null || !x.getItBaja().equals("S") ).collect(Collectors.toList());
 		}
+
+		List<DenunciaPersonaDTO> denunciantes = null;
 
 		if( !denunciaDTO.getLstDenunciantes().isEmpty() ){
 
@@ -86,8 +92,13 @@ public class DenunciaServiceImpl implements DenunciaService {
 			for( DenunciaPersonaDTO denunciaPersonaDTO : denunciaDTO.getLstDenunciantes() ){
 				denunciaPersonaDTO.setTipoPersona(CatalogosValoresToDTO.INSTANCE.apply(catalogoValores));
 			}
+
+			denunciantes = denunciaDTO.getLstDenunciantes().stream().filter(x->x.getItBaja()==null || !x.getItBaja().equals("S") ).collect(Collectors.toList());
 		}
 
+		// Quitamos las listas de denuncia
+		denunciaDTO.setLstDenunciados(null);
+		denunciaDTO.setLstDenunciantes(null);
 
 		//TODO pendiente por el front (USUARIO - investigador)
 		UsuarioDTO usuarioDTO =  new UsuarioDTO();
@@ -99,6 +110,23 @@ public class DenunciaServiceImpl implements DenunciaService {
 		denuncia = denunciaDAO.save(denuncia);
 
 		this.crearHistorico(denuncia, denuncia.getCdUsuAlta());
+
+		// Insertamos o actualizamos las lista de denunciantes y denunciados
+		for( DenunciaPersonaDTO dto : denunciados ){
+			if( dto.getIdDenunciaPersona()==null ) {
+				DenunciaPersona dp = DenunciaPersonaToEntity.INSTANCE.apply(dto);
+				dp.setIdDenuncia(denuncia.getIdDenuncia());
+				denunciaPersonaDAO.save(dp);
+			}
+		}
+
+		for( DenunciaPersonaDTO dto : denunciantes ){
+			if( dto.getIdDenunciaPersona()==null ) {
+				DenunciaPersona dp = DenunciaPersonaToEntity.INSTANCE.apply(dto);
+				dp.setIdDenuncia(denuncia.getIdDenuncia());
+				denunciaPersonaDAO.save(dp);
+			}
+		}
 
 		return DenunciaToDTO.INSTANCE.apply(denuncia);
 	}
@@ -123,7 +151,6 @@ public class DenunciaServiceImpl implements DenunciaService {
 				if( denunciaPersonaDTO.getItBaja()!=null && denunciaPersonaDTO.getItBaja().equals("S") ){
 					this.denunciaPersonaDAO.deleteById(denunciaPersonaDTO.getIdDenunciaPersona());
 				}
-				denunciaPersonaDTO.setIdDenuncia(denunciaDTO.getIdDenuncia());
 				denunciaPersonaDTO.setTipoPersona(CatalogosValoresToDTO.INSTANCE.apply(catalogoValores));
 			}
 			denunciados = denunciaDTO.getLstDenunciados().stream().filter(x->x.getItBaja()==null || !x.getItBaja().equals("S") ).collect(Collectors.toList());
@@ -141,15 +168,14 @@ public class DenunciaServiceImpl implements DenunciaService {
 				if( denunciaPersonaDTO.getItBaja()!=null && denunciaPersonaDTO.getItBaja().equals("S") ){
 					this.denunciaPersonaDAO.deleteById(denunciaPersonaDTO.getIdDenunciaPersona());
 				}
-				denunciaPersonaDTO.setIdDenuncia(denunciaDTO.getIdDenuncia());
 				denunciaPersonaDTO.setTipoPersona(CatalogosValoresToDTO.INSTANCE.apply(catalogoValores));
 			}
 			denunciantes = denunciaDTO.getLstDenunciantes().stream().filter(x->x.getItBaja()==null || !x.getItBaja().equals("S") ).collect(Collectors.toList());
 		}
 
 		// Quitamos las listas de denuncia
-		denunciaDTO.setLstDenunciados(denunciados);
-		denunciaDTO.setLstDenunciantes(denunciantes);
+		denunciaDTO.setLstDenunciados(null);
+		denunciaDTO.setLstDenunciantes(null);
 
 		if(denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.PRELIMINAR)){
 			denunciaDTO.setNmExpedienteInvPreliminar(this.generarCodigoDenuncia(denunciaDTO));
@@ -170,7 +196,7 @@ public class DenunciaServiceImpl implements DenunciaService {
 		this.crearHistorico(denuncia, usuarioOperacion);
 
 		// Insertamos o actualizamos las lista de denunciantes y denunciados
-		/*for( DenunciaPersonaDTO dto : denunciados ){
+		for( DenunciaPersonaDTO dto : denunciados ){
 			if( dto.getIdDenunciaPersona()==null ) {
 				DenunciaPersona dp = DenunciaPersonaToEntity.INSTANCE.apply(dto);
 				dp.setIdDenuncia(denuncia.getIdDenuncia());
@@ -184,9 +210,9 @@ public class DenunciaServiceImpl implements DenunciaService {
 				dp.setIdDenuncia(denuncia.getIdDenuncia());
 				denunciaPersonaDAO.save(dp);
 			}
-		}*/
+		}
 
-		denunciaDTO = DenunciaToDTO.INSTANCE.apply(denuncia);
+		//denunciaDTO = DenunciaToDTO.INSTANCE.apply(denuncia);
 
 		return denunciaDTO;
 	}

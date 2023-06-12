@@ -89,13 +89,13 @@ public class Denuncia {
 	private String nmDocumento;
 
 	//@JsonBackReference
-	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
-	@JoinColumn(name = "ID_DENUNCIA", referencedColumnName = "ID_DENUNCIA")
+	@OneToMany
+	@JoinColumn(name = "ID_DENUNCIA", nullable = false, insertable = false, updatable = false)
 	private Set<DenunciaPersona> lstDenunciantes = new HashSet<>();
 
 	//@JsonBackReference
-	@OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
-	@JoinColumn(name = "ID_DENUNCIA", referencedColumnName = "ID_DENUNCIA")
+	@OneToMany
+	@JoinColumn(name = "ID_DENUNCIA", insertable = false, updatable = false)
 	private Set<DenunciaPersona> lstDenunciados = new HashSet<>();
 
 

@@ -56,7 +56,7 @@ public enum DenunciaToEntity implements Function<DenunciaDTO, Denuncia> {
                 }
                 entity.setLstDenunciantes(denunciantes);
             }
-            if (dto.getLstDenunciados() != null) {
+            /*if (dto.getLstDenunciados() != null) {
                 Set<DenunciaPersona> denunciados = new HashSet<>();
                 for (DenunciaPersonaDTO denunciadoDTO : dto.getLstDenunciados()) {
                     DenunciaPersona denunciado = DenunciaPersonaToEntity.INSTANCE.apply(denunciadoDTO);
@@ -64,7 +64,7 @@ public enum DenunciaToEntity implements Function<DenunciaDTO, Denuncia> {
                     denunciados.add(denunciado);
                 }
                 entity.setLstDenunciados(denunciados);
-            }
+            }*/
         }
 
         return entity;
