@@ -26,7 +26,7 @@ public class Denuncia {
 	private Integer idDenuncia;
 	
 	@Column(name="FC_ALTA_DENUNCIA", nullable = false)
-	private LocalDateTime fcAltaDenuncia;
+	private LocalDate fcAltaDenuncia;
 	
 	@ManyToOne
 	@JoinColumn(name="ID_FISCALIA", nullable = true)
@@ -47,7 +47,7 @@ public class Denuncia {
 	private String nmDenuncia;
 	
 	@Column(name="FC_PLAZO", nullable = false)
-	private LocalDateTime fcPlazo;
+	private LocalDate fcPlazo;
 	
 	@ManyToOne // (fetch= FetcType.LAZY)
 	@JoinColumn(name="ID_ESTADO", nullable = false)

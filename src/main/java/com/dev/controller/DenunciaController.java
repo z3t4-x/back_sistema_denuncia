@@ -43,6 +43,26 @@ public class DenunciaController {
 		}
 	}
 
+	@GetMapping("/preliminar")
+	public ResponseEntity<List<DenunciaDTO>> listarPreliminar() {
+		try {
+			List<DenunciaDTO> denuncias = service.lstPreliminar();
+			return ResponseEntity.ok(denuncias);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+	@GetMapping("/preparatoria")
+	public ResponseEntity<List<DenunciaDTO>> listarPreparatoria() {
+		try {
+			List<DenunciaDTO> denuncias = service.lstPreparatoria();
+			return ResponseEntity.ok(denuncias);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
 	/**
 	 * listar por id
 	 * @param id

@@ -220,11 +220,33 @@ public class DenunciaServiceImpl implements DenunciaService {
 	/**
 	 *
 	 */
-	@Transactional
+	@Transactional(readOnly = true)
 	@Override
 	public List<DenunciaDTO> lstDenuncias() throws Exception {
 
 		List<Denuncia> lstDenuncias = denunciaDAO.findByEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(Constantes.codigoInvestigacion.DENUNCIA);
+
+		return lstDenuncias.stream()
+				.map(DenunciaToDTO.INSTANCE::apply)
+				.collect(Collectors.toList());
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<DenunciaDTO> lstPreparatoria() throws Exception {
+
+		List<Denuncia> lstDenuncias = denunciaDAO.findByEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(Constantes.codigoInvestigacion.PREPARATORIA);
+
+		return lstDenuncias.stream()
+				.map(DenunciaToDTO.INSTANCE::apply)
+				.collect(Collectors.toList());
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public List<DenunciaDTO> lstPreliminar() throws Exception {
+
+		List<Denuncia> lstDenuncias = denunciaDAO.findByEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(Constantes.codigoInvestigacion.PRELIMINAR);
 
 		return lstDenuncias.stream()
 				.map(DenunciaToDTO.INSTANCE::apply)
@@ -336,8 +358,8 @@ public class DenunciaServiceImpl implements DenunciaService {
 		if (usuarioOptional.isPresent()) {
 			Usuario usuario = usuarioOptional.get();
 
-			LocalDateTime fechaAltaDenuncia = LocalDateTime.now();
-			LocalDateTime fechaPlazoRevision = fechaAltaDenuncia.plusDays(15);
+			LocalDate fechaAltaDenuncia = LocalDate.now();
+			LocalDate fechaPlazoRevision = fechaAltaDenuncia.plusDays(15);
 
 			denunciaDTO.setFcAltaDenuncia(fechaAltaDenuncia);
 			denunciaDTO.setFcPlazo(fechaPlazoRevision);
@@ -421,7 +443,7 @@ public class DenunciaServiceImpl implements DenunciaService {
 		denunciaHistorico.setIdInvestigador(denuncia.getInvestigador().getIdUsuario());
 		denunciaHistorico.setNumDenuncia(denuncia.getNmDenuncia());
 
-		denunciaHistorico.setFcPlazo(denuncia.getFcPlazo().toLocalDate());
+		denunciaHistorico.setFcPlazo(denuncia.getFcPlazo());
 		denunciaHistorico.setIdEstadoExpediente(denuncia.getEstadoDenuncia().getIdValor());
 		denunciaHistorico.setIdTipoDocumento(denuncia.getTipoDocumento().getIdValor());
 		denunciaHistorico.setFcIngresoDocumento(denuncia.getFcIngresoDocumento());

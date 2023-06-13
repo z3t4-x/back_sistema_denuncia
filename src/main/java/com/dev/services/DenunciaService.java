@@ -38,6 +38,10 @@ public interface DenunciaService {
 
     List<DenunciaDTO> lstDenuncias() throws Exception;
 
+    List<DenunciaDTO> lstPreparatoria() throws Exception;
+
+    List<DenunciaDTO> lstPreliminar() throws Exception;
+
     /**
      * listará la denuncia en estado investigación preliminar
      * @return

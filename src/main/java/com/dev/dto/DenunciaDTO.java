@@ -16,13 +16,13 @@ import java.util.List;
 @Setter
 public class DenunciaDTO extends AuditoriaDTO implements Serializable {
     private Integer idDenuncia;
-    private LocalDateTime fcAltaDenuncia;
+    private LocalDate fcAltaDenuncia;
     private CatalogosValoresDTO fiscalia;
     private CatalogosValoresDTO tipoDelito;
     private LocalDate fcHechos;
     private UsuarioDTO investigador;
     private String nmDenuncia;
-    private LocalDateTime fcPlazo;
+    private LocalDate fcPlazo;
     private CatalogosValoresDTO estadoDenuncia;
     private CatalogosValoresDTO mesaParte;
     private String dsDescripcion;

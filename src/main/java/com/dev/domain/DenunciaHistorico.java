@@ -30,7 +30,7 @@ public class DenunciaHistorico  {
     private Integer idDenuncia;
 
     @Column(name="FC_ALTA_DENUNCIA", nullable = false)
-    private LocalDateTime fcAltaDenuncia;
+    private LocalDate fcAltaDenuncia;
 
     @Column(name="ID_FISCALIA", nullable = false)
     private Integer idFiscalia;
