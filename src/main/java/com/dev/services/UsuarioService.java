@@ -37,7 +37,7 @@ public interface UsuarioService {
      * @return
      * @throws Exception
      */
-    List<UsuarioDTO> listarPersonas() throws Exception;
+    List<UsuarioDTO> listarUsuarios() throws Exception;
 
     /**
      * buscar por id

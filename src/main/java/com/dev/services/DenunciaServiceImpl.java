@@ -364,22 +364,16 @@ public class DenunciaServiceImpl implements DenunciaService {
 			denunciaDTO.setFcAltaDenuncia(fechaAltaDenuncia);
 			denunciaDTO.setFcPlazo(fechaPlazoRevision);
 
-			CatalogosValoresDTO estadoDenunciaDTO = new CatalogosValoresDTO();
-			estadoDenunciaDTO.setIdValor(5);
-			denunciaDTO.setEstadoDenuncia(estadoDenunciaDTO);
+			denunciaDTO.setEstadoDenuncia(new CatalogosValoresDTO(Constantes.estadoInvestigacion.DENUNCIA));
 
 			if(usuario.getFiscalia()!=null) {
-				CatalogosValoresDTO fiscalia = new CatalogosValoresDTO();
-				fiscalia.setIdValor(usuario.getFiscalia().getIdValor());
-				denunciaDTO.setFiscalia(fiscalia);
+				denunciaDTO.setFiscalia(new CatalogosValoresDTO(usuario.getFiscalia().getIdValor()));
 			}
 
 			denunciaDTO.setCdUsuAlta(usuario.getCdUsuario());
 
 			if(usuario.getMesaParte()!=null) {
-				CatalogosValoresDTO mesaPartes = new CatalogosValoresDTO();
-				mesaPartes.setIdValor(usuario.getMesaParte().getIdValor());
-				denunciaDTO.setMesaParte(mesaPartes);
+				denunciaDTO.setMesaParte(new CatalogosValoresDTO(usuario.getMesaParte().getIdValor()));
 			}
 
 			//TODO

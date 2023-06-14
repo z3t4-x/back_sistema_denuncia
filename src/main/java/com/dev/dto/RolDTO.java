@@ -12,7 +12,7 @@ import java.util.List;
 public class RolDTO extends AuditoriaDTO implements Serializable {
 
     private Integer idRol;
-    private String nombreRol;
+    private String rolNombre;
     private List<UsuarioDTO> usuariosDTO;
 
     public RolDTO() {

@@ -39,7 +39,7 @@ public class RolServiceImpl implements RolService {
     }
 
     @Override
-    public List<RolDTO> listarPersonas() throws Exception {
+    public List<RolDTO> listarRol() throws Exception {
         List<Rol> lstRol =  rolDAO.findAll();
         return lstRol.stream().map(RolToDTO.INSTANCE::apply).collect(Collectors.toList());
     }

@@ -7,6 +7,7 @@ import com.dev.dto.UsuarioDTO;
 import com.dev.dto.converters.RolToEntity;
 import com.dev.dto.converters.UsuarioToDTO;
 import com.dev.dto.converters.UsuarioToEntity;
+import com.dev.exception.ModeloNotFoundException;
 import com.dev.security.JwtProvider;
 import com.dev.security.dto.JwtDTO;
 import com.dev.security.dto.LoginUsuario;
@@ -23,10 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -37,7 +35,7 @@ import java.util.Set;
 
 @Slf4j
 @RestController
-@RequestMapping("auth")
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -92,7 +90,52 @@ public class AuthController {
     }
 
 
+    @PutMapping
+    public ResponseEntity<UsuarioDTO> modificar(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
+        UsuarioDTO usuarioModificadoDTO = usuarioService.modificar(usuarioDTO);
+        return ResponseEntity.ok(usuarioModificadoDTO);
+    }
 
+
+
+    @GetMapping
+    public ResponseEntity<List<UsuarioDTO>> listarUsuarios() {
+        try {
+            List<UsuarioDTO> usuarios = usuarioService.listarUsuarios();
+            return ResponseEntity.ok(usuarios);
+        } catch (Exception e) {
+            // Manejar cualquier excepción y devolver una respuesta de error adecuada
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Integer id) {
+        try {
+            usuarioService.eliminar(id);
+            return ResponseEntity.noContent().build();
+        } catch (ModeloNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioDTO> buscarPorId(@PathVariable Integer id) {
+        try {
+            UsuarioDTO usuarioDTO = usuarioService.buscarPorId(id);
+            if (usuarioDTO != null) {
+                return ResponseEntity.ok(usuarioDTO);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<JwtDTO> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){

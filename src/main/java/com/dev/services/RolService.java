@@ -28,7 +28,7 @@ public interface RolService {
      * @return
      * @throws Exception
      */
-    List<RolDTO> listarPersonas() throws Exception;
+    List<RolDTO> listarRol() throws Exception;
 
     /**
      * buscar por id

@@ -68,7 +68,7 @@ public class UsuarioServiceImpl implements UsuarioService {
      * @throws Exception
      */
     @Override
-    public List<UsuarioDTO> listarPersonas() throws Exception {
+    public List<UsuarioDTO> listarUsuarios() throws Exception {
 
         List<Usuario> lstUsuario =  usuarioDAO.findAll();
         return lstUsuario.stream().map(UsuarioToDTO.INSTANCE::apply).collect(Collectors.toList());

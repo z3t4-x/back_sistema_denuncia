@@ -21,12 +21,12 @@ public enum UsuarioToEntity implements Function<UsuarioDTO, Usuario> {
                 entity.setRoles(dto.getRolesDTO().stream().map(RolToEntity.INSTANCE::apply).collect(Collectors.toList()));
             }
 
-            if (entity.getFiscalia() != null) {
-                dto.setFiscalia(CatalogosValoresToDTO.INSTANCE.apply(entity.getFiscalia()));
+            if (dto.getFiscalia() != null) {
+                entity.setFiscalia(CatalogosValoresToEntity.INSTANCE.apply(dto.getFiscalia()));
             }
 
-            if (entity.getMesaParte() != null) {
-                dto.setMesaParte(CatalogosValoresToDTO.INSTANCE.apply(entity.getMesaParte()));
+            if (dto.getMesaParte() != null) {
+                entity.setMesaParte(CatalogosValoresToEntity.INSTANCE.apply(dto.getMesaParte()));
             }
         }
 
