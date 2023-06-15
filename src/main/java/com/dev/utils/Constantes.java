@@ -110,13 +110,6 @@ public final class Constantes {
 		public static final String CATALOGO_ESTADO_DENUNCIA = "ESTADO DE LA DENUNCIA";
 	}
 
-
-
-
-
-
-
-
 	/**
 	 * Afirmacion si o no
 	 *
@@ -129,6 +122,37 @@ public final class Constantes {
 
 		public static final String S = "S";
 		public static final String N = "N";
+
+	}
+
+
+	public static final class Roles {
+
+		protected Roles() {
+
+		}
+
+		public static final Integer ID_ROL_ADMINISTRADOR = 1;
+		public static final Integer ID_ROL_MESA_DE_PARTES = 2;
+
+		public static final Integer ID_ROL_INVESTIGADOR = 3;
+
+		public static final String ROL_ADMINISTRADOR = "ADMINISTRADOR";
+		public static final String ROL_MESA_DE_PARTES = "MESA DE PARTES";
+
+		public static final String ROL_INVESTIGADOR = "AUXILIAR INVESTIGADOR";
+
+	}
+
+
+	public static final class Fiscalias {
+
+		protected Fiscalias() {
+
+		}
+		public static final Integer ID_FISCALIA_13 = 39;
+
+		public static final Integer ID_FISCALIA_14 = 40;
 
 	}
 }

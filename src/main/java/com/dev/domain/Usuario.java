@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -54,7 +55,7 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "ID_USUARIO"),
             inverseJoinColumns = @JoinColumn(name = "ID_ROL")
     )
-    private List<Rol> roles;
+    private List<Rol> roles = new ArrayList<>();
 
     @Column(name="CD_USU_ALTA")
     private String cdUsuAlta;

@@ -98,7 +98,7 @@ public class AuthController {
 
 
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<UsuarioDTO>> listarUsuarios() {
         try {
             List<UsuarioDTO> usuarios = usuarioService.listarUsuarios();
@@ -149,4 +149,13 @@ public class AuthController {
         JwtDTO jwtDto = new JwtDTO(jwt, userDetails.getUsername(), userDetails.getAuthorities());
         return new ResponseEntity(jwtDto, HttpStatus.OK);
     }
+
+
+    @GetMapping("/usuarioRolFiscalia")
+    public ResponseEntity<List<UsuarioDTO>> obtenerUsuariosPorRolYFiscalia() {
+        List<UsuarioDTO> usuarios = usuarioService.obtenerUsuariosPorRolYFiscalia();
+        return ResponseEntity.ok(usuarios);
+    }
+
+
 }

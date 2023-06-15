@@ -39,6 +39,8 @@ public interface UsuarioService {
      */
     List<UsuarioDTO> listarUsuarios() throws Exception;
 
+    List<UsuarioDTO> obtenerUsuariosPorRolYFiscalia();
+
     /**
      * buscar por id
      * @param id

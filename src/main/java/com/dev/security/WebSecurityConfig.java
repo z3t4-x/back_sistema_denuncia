@@ -54,7 +54,7 @@ public class WebSecurityConfig   {
                         "/personas/**",
                         "/denuncias/**",
                         "/catalogos/**",
-                        "catalogosValores",
+                        "/catalogosValores/**",
                         "/roles/**",
                         "/usuarios/**",
                         "/denuncias-personas/**").permitAll() // poner los endpoints

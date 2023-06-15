@@ -23,9 +23,10 @@ public class Rol {
     @Column(name = "ROL_NOMBRE")
     private String rolNombre;
 
-    @JsonBackReference
-    @ManyToMany(mappedBy = "roles")
-    private List<Usuario> usuarios;
+
+//    @JsonBackReference
+//    @ManyToMany(mappedBy = "roles")
+//    private List<Usuario> usuarios;
 
     // constructors, getters and setters
     @Column(name="CD_USU_ALTA")

@@ -17,9 +17,9 @@ public enum RolToEntity implements Function<RolDTO, Rol> {
         if (dto != null) {
             BeanUtils.copyProperties(dto, entity);
 
-            if (dto.getUsuariosDTO() != null) {
-                entity.setUsuarios(dto.getUsuariosDTO().stream().map(UsuarioToEntity.INSTANCE::apply).collect(Collectors.toList()));
-            }
+//            if (dto.getUsuariosDTO() != null) {
+//                entity.setUsuarios(dto.getUsuariosDTO().stream().map(UsuarioToEntity.INSTANCE::apply).collect(Collectors.toList()));
+//            }
         }
         return entity;
     }

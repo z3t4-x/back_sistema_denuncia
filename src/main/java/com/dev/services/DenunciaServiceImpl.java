@@ -224,33 +224,177 @@ public class DenunciaServiceImpl implements DenunciaService {
 	@Override
 	public List<DenunciaDTO> lstDenuncias() throws Exception {
 
-		List<Denuncia> lstDenuncias = denunciaDAO.findByEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(Constantes.codigoInvestigacion.DENUNCIA);
+		UsuarioPrincipal usuarioPrincipal = getUsuarioPrincipalAutenticado();
 
-		return lstDenuncias.stream()
-				.map(DenunciaToDTO.INSTANCE::apply)
-				.collect(Collectors.toList());
+		String cdUsuario = usuarioPrincipal.getUsername();
+
+		Usuario usuario = usuarioDAO.findByCdUsuario(cdUsuario).get();
+
+		if (usuario == null) {
+			throw new ServiceException("No se encontró el usuario.");
+
+		}
+
+		if (tieneRol(usuario, Constantes.Roles.ID_ROL_ADMINISTRADOR) || tieneRol(usuario, Constantes.Roles.ID_ROL_MESA_DE_PARTES)) {
+
+			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_14)) {
+
+				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
+						usuario.getFiscalia().getIdValor(), Constantes.codigoInvestigacion.DENUNCIA);
+
+				return lstDenuncias.stream()
+						.map(DenunciaToDTO.INSTANCE::apply)
+						.collect(Collectors.toList());
+			}
+
+			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_13)) {
+				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
+						usuario.getFiscalia().getIdValor(), Constantes.codigoInvestigacion.DENUNCIA);
+
+				return lstDenuncias.stream()
+						.map(DenunciaToDTO.INSTANCE::apply)
+						.collect(Collectors.toList());
+			}
+
+		}
+
+		if (tieneRol(usuario, Constantes.Roles.ID_ROL_INVESTIGADOR.intValue())) {
+			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_13)) {
+				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndInvestigadorIdUsuarioAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
+						usuario.getFiscalia().getIdValor(),	usuario.getIdUsuario(), Constantes.codigoInvestigacion.DENUNCIA);
+
+				return lstDenuncias.stream()
+						.map(DenunciaToDTO.INSTANCE::apply)
+						.collect(Collectors.toList());
+			}
+
+			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_14)) {
+				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndInvestigadorIdUsuarioAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
+						usuario.getFiscalia().getIdValor(),	usuario.getIdUsuario(), Constantes.codigoInvestigacion.DENUNCIA);
+
+				return lstDenuncias.stream()
+						.map(DenunciaToDTO.INSTANCE::apply)
+						.collect(Collectors.toList());
+			}
+		}
+
+		throw new ServiceException("No se pudo obtener la lista de denuncias.");
+
 	}
 
 	@Transactional(readOnly = true)
 	@Override
 	public List<DenunciaDTO> lstPreparatoria() throws Exception {
+		UsuarioPrincipal usuarioPrincipal = getUsuarioPrincipalAutenticado();
+		String cdUsuario = usuarioPrincipal.getUsername();
+		Usuario usuario = usuarioDAO.findByCdUsuario(cdUsuario).orElse(null);
 
-		List<Denuncia> lstDenuncias = denunciaDAO.findByEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(Constantes.codigoInvestigacion.PREPARATORIA);
+		if (usuario == null) {
+			throw new ServiceException("No se encontró el usuario.");
+		}
 
-		return lstDenuncias.stream()
-				.map(DenunciaToDTO.INSTANCE::apply)
-				.collect(Collectors.toList());
+		if (tieneRol(usuario, Constantes.Roles.ID_ROL_ADMINISTRADOR) || tieneRol(usuario, Constantes.Roles.ID_ROL_MESA_DE_PARTES)) {
+
+			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_14)) {
+
+				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
+						usuario.getFiscalia().getIdValor(), Constantes.codigoInvestigacion.PREPARATORIA);
+
+				return lstDenuncias.stream()
+						.map(DenunciaToDTO.INSTANCE::apply)
+						.collect(Collectors.toList());
+			}
+
+			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_13)) {
+				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
+						usuario.getFiscalia().getIdValor(), Constantes.codigoInvestigacion.PREPARATORIA);
+
+				return lstDenuncias.stream()
+						.map(DenunciaToDTO.INSTANCE::apply)
+						.collect(Collectors.toList());
+			}
+
+		}
+
+		if (tieneRol(usuario, Constantes.Roles.ID_ROL_INVESTIGADOR.intValue())) {
+			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_13)) {
+				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndInvestigadorIdUsuarioAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
+						usuario.getFiscalia().getIdValor(),	usuario.getIdUsuario(), Constantes.codigoInvestigacion.PREPARATORIA);
+
+				return lstDenuncias.stream()
+						.map(DenunciaToDTO.INSTANCE::apply)
+						.collect(Collectors.toList());
+			}
+
+			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_14)) {
+				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndInvestigadorIdUsuarioAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
+						usuario.getFiscalia().getIdValor(),	usuario.getIdUsuario(), Constantes.codigoInvestigacion.PREPARATORIA);
+
+				return lstDenuncias.stream()
+						.map(DenunciaToDTO.INSTANCE::apply)
+						.collect(Collectors.toList());
+			}
+		}
+
+		throw new ServiceException("No se pudo obtener la lista de denuncias.");
 	}
+
 
 	@Transactional(readOnly = true)
 	@Override
 	public List<DenunciaDTO> lstPreliminar() throws Exception {
+		UsuarioPrincipal usuarioPrincipal = getUsuarioPrincipalAutenticado();
+		String cdUsuario = usuarioPrincipal.getUsername();
+		Usuario usuario = usuarioDAO.findByCdUsuario(cdUsuario).orElse(null);
 
-		List<Denuncia> lstDenuncias = denunciaDAO.findByEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(Constantes.codigoInvestigacion.PRELIMINAR);
+		if (usuario == null) {
+			throw new ServiceException("No se encontró el usuario.");
+		}
 
-		return lstDenuncias.stream()
-				.map(DenunciaToDTO.INSTANCE::apply)
-				.collect(Collectors.toList());
+		if (tieneRol(usuario, Constantes.Roles.ID_ROL_ADMINISTRADOR) || tieneRol(usuario, Constantes.Roles.ID_ROL_MESA_DE_PARTES)) {
+
+			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_14)) {
+
+				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
+						usuario.getFiscalia().getIdValor(), Constantes.codigoInvestigacion.PRELIMINAR);
+
+				return lstDenuncias.stream()
+						.map(DenunciaToDTO.INSTANCE::apply)
+						.collect(Collectors.toList());
+			}
+
+			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_13)) {
+				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
+						usuario.getFiscalia().getIdValor(), Constantes.codigoInvestigacion.PRELIMINAR);
+
+				return lstDenuncias.stream()
+						.map(DenunciaToDTO.INSTANCE::apply)
+						.collect(Collectors.toList());
+			}
+
+		}
+
+		if (tieneRol(usuario, Constantes.Roles.ID_ROL_INVESTIGADOR.intValue())) {
+			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_13)) {
+				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndInvestigadorIdUsuarioAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
+						usuario.getFiscalia().getIdValor(),	usuario.getIdUsuario(), Constantes.codigoInvestigacion.PRELIMINAR);
+
+				return lstDenuncias.stream()
+						.map(DenunciaToDTO.INSTANCE::apply)
+						.collect(Collectors.toList());
+			}
+
+			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_14)) {
+				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndInvestigadorIdUsuarioAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
+						usuario.getFiscalia().getIdValor(),	usuario.getIdUsuario(), Constantes.codigoInvestigacion.PRELIMINAR);
+
+				return lstDenuncias.stream()
+						.map(DenunciaToDTO.INSTANCE::apply)
+						.collect(Collectors.toList());
+			}
+		}
+
+		throw new ServiceException("No se pudo obtener la lista de denuncias.");
 	}
 
 	/**
@@ -307,23 +451,23 @@ public class DenunciaServiceImpl implements DenunciaService {
 	 * método para generar el codigo de la denuncia
 	 * @return
 	 */
-	private String generarCodigoDenuncia(DenunciaDTO denunciaDTO){
-
+	private String generarCodigoDenuncia(DenunciaDTO denunciaDTO) {
 		LocalDate fecha = LocalDate.now();
 		Integer anio = fecha.getYear();
 		String codigoDenuncia = "";
 
-				if(Constantes.estadoInvestigacion.DENUNCIA.equals(denunciaDTO.getEstadoDenuncia().getIdValor())){
-					codigoDenuncia = "DEN";
-				}
-				if(Constantes.estadoInvestigacion.PRELIMINAR.equals(denunciaDTO.getEstadoDenuncia().getIdValor())){
-					codigoDenuncia = "IP";
-				}
-				if(Constantes.estadoInvestigacion.PREPARATORIA.equals(denunciaDTO.getEstadoDenuncia().getIdValor())){
-					codigoDenuncia = "PRE";
-				}
+		if (Constantes.estadoInvestigacion.DENUNCIA.equals(denunciaDTO.getEstadoDenuncia().getIdValor())) {
+			codigoDenuncia = "DEN";
+		} else if (Constantes.estadoInvestigacion.PRELIMINAR.equals(denunciaDTO.getEstadoDenuncia().getIdValor())) {
+			codigoDenuncia = "IP";
+		} else if (Constantes.estadoInvestigacion.PREPARATORIA.equals(denunciaDTO.getEstadoDenuncia().getIdValor())) {
+			codigoDenuncia = "PRE";
+		}
 
-		String numDenuncia = String.format("%03d", this.denunciaDAO.count() + 1);
+		String numDenuncia = "";
+		if (denunciaDTO.getFiscalia() != null) {
+			numDenuncia = String.format("%03d", denunciaDAO.countByFiscaliaIdValorAndEstadoDenunciaIdValor(denunciaDTO.getFiscalia().getIdValor(), denunciaDTO.getEstadoDenuncia().getIdValor()) + 1);
+		}
 
 		CatalogosValores codigoFiscalia = catValoresDAO.findById(denunciaDTO.getFiscalia().getIdValor())
 				.orElseThrow(() -> new IllegalArgumentException("No se encontró la fiscalía con ID: " + denunciaDTO.getFiscalia().getIdValor()));
@@ -334,7 +478,7 @@ public class DenunciaServiceImpl implements DenunciaService {
 		stringBuilder.append("-");
 		stringBuilder.append(anio);
 		stringBuilder.append("-");
-		if(denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.PREPARATORIA)){
+		if (denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.PREPARATORIA)) {
 			stringBuilder.append("02");
 			stringBuilder.append("-");
 		}
@@ -343,6 +487,9 @@ public class DenunciaServiceImpl implements DenunciaService {
 
 		return codDenuncia;
 	}
+
+
+
 
 
 	/**
@@ -378,9 +525,7 @@ public class DenunciaServiceImpl implements DenunciaService {
 
 			//TODO
 			// que pediente a eliminar el campo auxiliar
-			CatalogosValoresDTO auxiliar = new CatalogosValoresDTO();
-			auxiliar.setIdValor(18);
-			denunciaDTO.setAuxiliar(auxiliar);
+			denunciaDTO.setAuxiliar(new CatalogosValoresDTO(18));
 
 			String numDenuncia = this.generarCodigoDenuncia(denunciaDTO);
 			denunciaDTO.setNmDenuncia(numDenuncia);
@@ -436,7 +581,6 @@ public class DenunciaServiceImpl implements DenunciaService {
 		denunciaHistorico.setIdAuxiliar(denuncia.getAuxiliar().getIdValor());
 		denunciaHistorico.setIdInvestigador(denuncia.getInvestigador().getIdUsuario());
 		denunciaHistorico.setNumDenuncia(denuncia.getNmDenuncia());
-
 		denunciaHistorico.setFcPlazo(denuncia.getFcPlazo());
 		denunciaHistorico.setIdEstadoExpediente(denuncia.getEstadoDenuncia().getIdValor());
 		denunciaHistorico.setIdTipoDocumento(denuncia.getTipoDocumento().getIdValor());
@@ -444,8 +588,6 @@ public class DenunciaServiceImpl implements DenunciaService {
 		denunciaHistorico.setDescripcion(denuncia.getDsDescripcion());
 		denunciaHistorico.setCdExpedientePreliminar(denuncia.getNmExpedienteInvPreliminar());
 		denunciaHistorico.setCdExpedientePreparatoria(denuncia.getNmExpedientePreparatoria());
-
-		// Todo historico siempre es de insercion
 		denunciaHistorico.setCdUsuAlta(cdUsuAlta);
 		denunciaHistorico.setFcAltaFila(LocalDateTime.now());
 
@@ -464,6 +606,12 @@ public class DenunciaServiceImpl implements DenunciaService {
 		} else {
 			throw new ServiceException("No se pudo obtener el usuario autenticado.");
 		}
+	}
+
+
+	private boolean tieneRol(Usuario usuario, Integer idRol) {
+		return usuario.getRoles().stream()
+				.anyMatch(rol -> rol.getIdRol().equals(idRol));
 	}
 
 

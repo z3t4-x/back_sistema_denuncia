@@ -14,7 +14,9 @@ public enum RolToDTO implements Function<Rol, RolDTO> {
     public RolDTO apply(Rol entity) {
         RolDTO dto = new RolDTO();
         if (entity != null) {
-            BeanUtils.copyProperties(entity, dto);
+          //  BeanUtils.copyProperties(entity, dto);
+            dto.setIdRol(entity.getIdRol());
+            dto.setRolNombre(entity.getRolNombre());
         }
         return dto;
     }
