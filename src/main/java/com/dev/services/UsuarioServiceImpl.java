@@ -129,20 +129,30 @@ public class UsuarioServiceImpl implements UsuarioService {
      */
     @Override
     public List<UsuarioDTO> obtenerUsuariosPorRolYFiscalia() {
-        List<Usuario> usuarios = usuarioDAO.findAll();
-        List<UsuarioDTO> usuariosFiltrados = new ArrayList<>();
+        UsuarioPrincipal usuarioPrincipal = getUsuarioPrincipalAutenticado();
+        String cdUsuario = usuarioPrincipal.getUsername();
 
-        for (Usuario usuario : usuarios) {
-            if ((usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_13)
-                    || usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_14))
-                    && tieneRol(usuario, Constantes.Roles.ID_ROL_INVESTIGADOR)) {
-                UsuarioDTO usuarioDTO = UsuarioToDTO.INSTANCE.apply(usuario);
-                usuariosFiltrados.add(usuarioDTO);
-            }
+        Usuario usuario = usuarioDAO.findByCdUsuario(cdUsuario).orElse(null);
+
+        if (usuario == null) {
+            throw new ServiceException("No se encontró el usuario.");
         }
 
-        return usuariosFiltrados;
+        if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_13)) {
+            List<Usuario> usuarios = usuarioDAO.findByRolesRolNombreAndFiscaliaIdValor(Constantes.Roles.ROL_INVESTIGADOR, Constantes.Fiscalias.ID_FISCALIA_13);
+            return usuarios.stream()
+                    .map(UsuarioToDTO.INSTANCE::apply)
+                    .collect(Collectors.toList());
+        } else if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_14)) {
+            List<Usuario> usuarios = usuarioDAO.findByRolesRolNombreAndFiscaliaIdValor(Constantes.Roles.ROL_INVESTIGADOR, Constantes.Fiscalias.ID_FISCALIA_14);
+            return usuarios.stream()
+                    .map(UsuarioToDTO.INSTANCE::apply)
+                    .collect(Collectors.toList());
+        }
+
+        throw new ServiceException("No se pudo obtener la lista de usuarios.");
     }
+
 
 
     private boolean tieneRol(Usuario usuario, Integer idRol) {

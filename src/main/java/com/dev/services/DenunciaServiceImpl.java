@@ -258,7 +258,7 @@ public class DenunciaServiceImpl implements DenunciaService {
 
 		}
 
-		if (tieneRol(usuario, Constantes.Roles.ID_ROL_INVESTIGADOR.intValue())) {
+		if (tieneRol(usuario, Constantes.Roles.ID_ROL_INVESTIGADOR)) {
 			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_13)) {
 				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndInvestigadorIdUsuarioAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
 						usuario.getFiscalia().getIdValor(),	usuario.getIdUsuario(), Constantes.codigoInvestigacion.DENUNCIA);
