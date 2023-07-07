@@ -9,12 +9,9 @@ import java.util.stream.Collectors;
 import com.dev.dao.ICatalogosValoresDAO;
 import com.dev.dao.UsuarioDAO;
 import com.dev.domain.CatalogosValores;
-import com.dev.domain.Persona;
 import com.dev.dto.CatalogosValoresDTO;
-import com.dev.dto.PersonaDTO;
 import com.dev.dto.converters.*;
 import com.dev.exception.ModeloNotFoundException;
-import com.dev.utils.Constantes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,6 +70,12 @@ public class CatalogosValoresServiceImpl implements CatalogosValoresService {
 	public CatalogosValoresDTO lstPorId(Integer id) throws Exception {
 		Optional<CatalogosValores> catValor = this.catValoresDAO.findById(id);
 		return catValor.map(CatalogosValoresToDTO.INSTANCE::apply).orElse(null);
+	}
+
+	@Override
+	public CatalogosValores buscarId(Integer id) throws Exception {
+
+		return catValoresDAO.findById(id).get();
 	}
 
 	/**

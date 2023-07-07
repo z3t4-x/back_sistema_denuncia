@@ -49,6 +49,8 @@ public interface UsuarioService {
      */
     UsuarioDTO buscarPorId(Integer id) throws Exception;
 
+    Usuario buscarIdUsuario(Integer id) throws Exception;
+
     /**
      * eliminar
      * @param id

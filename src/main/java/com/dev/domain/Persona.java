@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -49,7 +50,8 @@ public class Persona {
 	@ManyToOne//(fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_TIPO_IDENTIFICACION")
 	private CatalogosValores tipoIdentificacion;
-	
+
+	@NotNull
 	@Column(name="DNI", unique = true, length = 8)
 	private String dni;
 
@@ -67,8 +69,6 @@ public class Persona {
 	@ManyToOne
 	@JoinColumn(name="ID_USUARIO")
 	private  Usuario usuario;
-
-
 
 	//@JsonBackReference
 	//@JsonBackReference

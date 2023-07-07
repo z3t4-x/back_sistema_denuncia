@@ -15,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -180,6 +179,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         Optional<Usuario> catValor = this.usuarioDAO.findById(id);
         return catValor.map(UsuarioToDTO.INSTANCE::apply).orElse(null);
+    }
+
+    @Override
+    public Usuario buscarIdUsuario(Integer id) throws Exception {
+
+        Optional<Usuario> catValor = this.usuarioDAO.findById(id);
+        return catValor.get();
     }
 
     /**

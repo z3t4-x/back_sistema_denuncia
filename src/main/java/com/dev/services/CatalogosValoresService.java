@@ -40,6 +40,8 @@ public interface CatalogosValoresService {
 	 */
 	CatalogosValoresDTO lstPorId(Integer id) throws Exception;
 
+	CatalogosValores buscarId(Integer id) throws Exception;
+
 	/**
 	 * eliminará de forma lógica
 	 * @param id

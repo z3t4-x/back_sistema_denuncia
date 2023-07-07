@@ -1,18 +1,24 @@
 package com.dev.controller;
 
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
-import com.dev.domain.DenunciaPersona;
+import com.dev.domain.*;
+import com.dev.dto.CatalogosValoresDTO;
 import com.dev.dto.DenunciaDTO;
 
 import com.dev.dto.UsuarioDTO;
+import com.dev.services.CatalogosValoresService;
 import com.dev.services.DenunciaService;
 import com.dev.services.PersonaService;
 import com.dev.services.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -28,6 +34,12 @@ public class DenunciaController {
 
 	@Autowired
 	private DenunciaService service;
+
+	@Autowired
+	private CatalogosValoresService catalogosValoresService;
+
+	@Autowired
+	private  UsuarioService usuarioService;
 
 	/**
 	 * listar todo
@@ -136,4 +148,136 @@ public class DenunciaController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
+
+
+	@GetMapping("/buscar")
+	public ResponseEntity<List<Denuncia>> buscarDenuncias(@RequestParam(value = "fcAltaDenuncia", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fcAltaDenuncia,
+			@RequestParam(value = "fcIngresoDocumento", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fcIngresoDocumento,
+			@RequestParam(value = "fcHechos", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fcHechos,
+			@RequestParam(value = "tipoDelito", required = false) Integer idTipoDelito,
+			@RequestParam(value = "investigador", required = false) Integer idInvestigador,
+			@RequestParam(value = "nmDenuncia", required = false) String nmDenuncia,
+			@RequestParam(value = "estadoDenuncia", required = false) Integer idEstadoDenuncia,
+			@RequestParam(value = "tipoDocumento", required = false) Integer idTipoDocumento,
+			@RequestParam(value = "nmExpedienteInvPreliminar", required = false) String nmExpedienteInvPreliminar,
+			@RequestParam(value = "nmExpedientePreparatoria", required = false) String nmExpedientePreparatoria,
+			@RequestParam(value = "nmDocumento", required = false) String nmDocumento
+	) throws Exception {
+		Denuncia denuncia = new Denuncia();
+		denuncia.setFcAltaDenuncia(fcAltaDenuncia);
+		denuncia.setFcHechos(fcHechos);
+		denuncia.setNmDenuncia(nmDenuncia);
+		denuncia.setFcIngresoDocumento(fcIngresoDocumento);
+		denuncia.setNmDocumento(nmDocumento);
+		denuncia.setNmExpedientePreparatoria(nmExpedientePreparatoria);
+		denuncia.setNmExpedienteInvPreliminar(nmExpedienteInvPreliminar);
+		if (idTipoDelito != null) {
+			CatalogosValores tipoDelito = catalogosValoresService.buscarId(idTipoDelito);
+			denuncia.setTipoDelito(tipoDelito);
+		}
+		if (idInvestigador != null) {
+			Usuario investigador = usuarioService.buscarIdUsuario(idInvestigador);
+			denuncia.setInvestigador(investigador);
+		}
+		if (idEstadoDenuncia != null) {
+			CatalogosValores estadoDenuncia = catalogosValoresService.buscarId(idEstadoDenuncia);
+			denuncia.setEstadoDenuncia(estadoDenuncia);
+		}
+		if (idTipoDocumento != null) {
+			CatalogosValores tipoDocumento = catalogosValoresService.buscarId(idTipoDocumento);
+			denuncia.setTipoDocumento(tipoDocumento);
+		}
+		List<Denuncia> denuncias = service.buscarDenuncias(denuncia);
+		return ResponseEntity.ok(denuncias);
+	}
+
+
+	@GetMapping("/historico/{idDenuncia}")
+	public ResponseEntity<List<DenunciaHistorico>> obtenerHistoricoDenuncia(@PathVariable Integer idDenuncia) {
+		List<DenunciaHistorico> historico = service.lstDenunciaHistorico(idDenuncia);
+		if (historico.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		} else {
+			return ResponseEntity.ok(historico);
+		}
+	}
+
+
+	/**
+	 * REPORTE
+	 */
+
+	@GetMapping("/reportes")
+	public ResponseEntity<Map<String, Long>> generarInforme() {
+		Map<String, Long> informe = new HashMap<>();
+		informe.put("totalDenuncias", service.totalDenuncias());
+		informe.put("totalEtapaPreliminar", service.totalPreliminar());
+		informe.put("totalEtapaPreparatoria", service.totalPreparatoria());
+		return ResponseEntity.ok(informe);
+	}
+
+
+
+
+
+
+
+
+
+//	@GetMapping("/buscar")
+//	public ResponseEntity<List<Denuncia>> buscarDenuncias(
+//			@RequestParam(value = "fcAltaDenuncia", required = false)@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fcAltaDenuncia,
+//			@RequestParam(value = "fcIngresoDocumento", required = false)@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fcIngresoDocumento,
+//			@RequestParam(value = "fcHechos", required = false)@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fcHechos,
+//			@RequestParam(value = "tipoDelito", required = false)  CatalogosValores tipoDelito,
+//			@RequestParam(value = "investigador", required = false) Usuario investigador,
+//			@RequestParam(value = "nmDenuncia", required = false) String nmDenuncia,
+//			@RequestParam(value = "estadoDenuncia", required = false) CatalogosValores estadoDenuncia,
+//			@RequestParam(value = "tipoDocumento", required = false) CatalogosValores tipoDocumento,
+//			@RequestParam(value = "nmExpedienteInvPreliminar", required = false) String nmExpedienteInvPreliminar,
+//			@RequestParam(value = "nmExpedientePreparatoria", required = false) String nmExpedientePreparatoria,
+//			@RequestParam(value = "nmDocumento", required = false) String nmDocumento
+//	) throws Exception {
+//		Denuncia denuncia = new Denuncia();;
+//		denuncia.setFcAltaDenuncia(fcAltaDenuncia);
+//		denuncia.setFcHechos(fcHechos);
+//		denuncia.setNmDenuncia(nmDenuncia);
+//		denuncia.setFcIngresoDocumento(fcIngresoDocumento);
+//		denuncia.setNmDocumento(nmDocumento);
+//		denuncia.setNmExpedientePreparatoria(nmExpedientePreparatoria);
+//		denuncia.setNmExpedienteInvPreliminar(nmExpedienteInvPreliminar);
+//
+////		denuncia.setTipoDelito(new CatalogosValores(idTipoDelito));
+//
+////		denuncia.setInvestigador(new Usuario(idInvestigador));
+////		denuncia.setEstadoDenuncia(idEstadoDenuncia);
+////		denuncia.setTipoDocumento(idTipoDocumento);
+//
+//		// Configurar los campos de tipo CatalogosValores por nombre
+//		if (tipoDelito != null) {
+//			CatalogosValores idTipoDelito = catalogosValoresService.buscarId(tipoDelito.getIdValor());
+//			denuncia.setTipoDelito(idTipoDelito);
+//		}
+//		if (investigador != null) {
+//			Usuario idInvestigador = usuarioService.buscarIdUsuario(investigador.getIdUsuario());
+//			denuncia.setInvestigador(idInvestigador);
+//		}
+//		if (estadoDenuncia != null) {
+//			CatalogosValores idEstadoDenuncia = catalogosValoresService.buscarId(estadoDenuncia.getIdValor());
+//			denuncia.setEstadoDenuncia(idEstadoDenuncia);
+//		}
+//		if (tipoDocumento != null) {
+//			CatalogosValores idTipoDocumento = catalogosValoresService.buscarId(tipoDocumento.getIdValor());
+//			denuncia.setTipoDocumento(idTipoDocumento);
+//		}
+//
+//		List<Denuncia> denuncias = service.buscarDenuncias(denuncia);
+//		return ResponseEntity.ok(denuncias);
+//	}
+
+
+
+
+
+
 }

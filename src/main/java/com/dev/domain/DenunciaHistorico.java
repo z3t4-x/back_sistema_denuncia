@@ -1,8 +1,7 @@
 package com.dev.domain;
 
-import com.dev.dto.AuditoriaDTO;
-import com.dev.dto.DenunciaDTO;
-import lombok.Data;
+
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,26 +25,27 @@ public class DenunciaHistorico  {
     private  Integer idDenunciaHist;
 
 
-    @Column(name="ID_DENUNCIA", nullable = false)
-    private Integer idDenuncia;
+    @ManyToOne
+    @JoinColumn(name = "ID_DENUNCIA", nullable = false)
+    private Denuncia denuncia;
 
     @Column(name="FC_ALTA_DENUNCIA", nullable = false)
     private LocalDate fcAltaDenuncia;
 
-    @Column(name="ID_FISCALIA", nullable = false)
-    private Integer idFiscalia;
+    @ManyToOne
+    @JoinColumn(name="ID_FISCALIA")
+    private CatalogosValores fiscalia;
 
-    @Column(name="ID_DELITO", nullable = false)
-    private Integer idTipoDelito;
+    @ManyToOne
+    @JoinColumn(name="ID_DELITO")
+    private CatalogosValores tipoDelito;
 
     @Column(name="FC_HECHOS")
     private LocalDate fcHechos;
 
-    @Column(name="ID_AUXILIAR")
-    private Integer idAuxiliar;
-
-    @Column(name="ID_INVESTIGADOR")
-    private Integer idInvestigador;
+    @ManyToOne
+    @JoinColumn(name="ID_INVESTIGADOR")
+    private Usuario investigador;
 
     @Column(name="NUM_DENUNCIA")
     private String numDenuncia;
@@ -53,11 +53,13 @@ public class DenunciaHistorico  {
     @Column(name="FC_PLAZO")
     private LocalDate fcPlazo;
 
-    @Column(name="ID_ESTADO_EXPEDIENTE")
-    private Integer idEstadoExpediente;
+    @ManyToOne
+    @JoinColumn(name="ID_ESTADO")
+    private CatalogosValores estadoDenuncia;
 
-    @Column(name="ID_TIPO_DOCUMENTO", nullable = false)
-    private Integer idTipoDocumento;
+    @ManyToOne
+    @JoinColumn(name="ID_TIPO_DOCUMENTO", nullable = false)
+    private CatalogosValores tipoDocumento;
 
     @Column(name="FC_INGRESO_DOCUMENTO", nullable = false)
     private LocalDate fcIngresoDocumento;
@@ -69,6 +71,32 @@ public class DenunciaHistorico  {
     private String cdExpedientePreparatoria;
 
     private String cdExpedientePreliminar;
+
+    // ultimos datos agregados
+    @Column(name="LINK_FILE")
+    private  String linkFile;
+    @Column(name="NM_ARCHIVO")
+    private String nmArchivo;
+
+    @Column(name="FC_PRORROGA")
+    private LocalDate fcProrroga;
+
+    @ManyToOne
+    @JoinColumn(name="ID_EXPEDIENTE_ETAPA")
+    private CatalogosValores estadoExpedienteEtapa;
+
+
+    @Column(name = "ID_ANAQUEL")
+    private Integer anaquel;
+
+    @Column(name = "ID_BANDA")
+    private Integer banda;
+
+    @Column(name = "ID_PAQUETE")
+    private Integer paquete;
+
+    @Column(name = "CODIGO_ARCHIVO")
+    private String codigoArchivo;
 
 
     @Column(name="CD_USU_ALTA")

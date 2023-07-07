@@ -22,6 +22,14 @@ public enum DenunciaToEntity implements Function<DenunciaDTO, Denuncia> {
 
         if (dto != null) {
             BeanUtils.copyProperties(dto, entity);
+/*            entity.setIdDenuncia(dto.getIdDenuncia());
+            entity.setFcAltaDenuncia(dto.getFcAltaDenuncia());
+            entity.setNmDenuncia(dto.getNmDenuncia());
+            entity.setFcHechos(dto.getFcHechos());
+            entity.setFcPlazo(dto.getFcPlazo());
+            entity.setNmExpedientePreparatoria(dto.getNmExpedientePreparatoria());
+            entity.setNmExpedienteInvPreliminar(dto.getNmExpedienteInvPreliminar());
+            entity.setFcIngresoDocumento(dto.getFcIngresoDocumento());*/
 
             if (dto.getFiscalia() != null) {
                 entity.setFiscalia(CatalogosValoresToEntity.INSTANCE.apply(dto.getFiscalia()));
@@ -42,12 +50,16 @@ public enum DenunciaToEntity implements Function<DenunciaDTO, Denuncia> {
                 entity.setTipoDocumento(CatalogosValoresToEntity.INSTANCE.apply(dto.getTipoDocumento()));
             }
 
-            if (dto.getAuxiliar() != null) {
-                entity.setAuxiliar(CatalogosValoresToEntity.INSTANCE.apply(dto.getAuxiliar()));
+            if (dto.getEstadoExpedienteEtapa() != null) {
+                entity.setEstadoExpedienteEtapa(CatalogosValoresToEntity.INSTANCE.apply(dto.getEstadoExpedienteEtapa()));
             }
 
+//            if (dto.getAuxiliar() != null) {
+//                entity.setAuxiliar(CatalogosValoresToEntity.INSTANCE.apply(dto.getAuxiliar()));
+//            }
+
             // Agregar las listas de denunciantes y denunciados
-            // Agregar los denunciantes y denunciados como conjuntos
+
            if (dto.getLstDenunciantes() != null) {
                 Set<DenunciaPersona> denunciantes = new HashSet<>();
                 for (DenunciaPersonaDTO denuncianteDTO : dto.getLstDenunciantes()) {

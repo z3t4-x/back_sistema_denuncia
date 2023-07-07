@@ -11,4 +11,6 @@ public interface DenunciaPersonaService {
     List<DenunciaPersona> obtenerDenunciantes(Denuncia denuncia);
 
     List<DenunciaPersona> obtenerDenunciados(Denuncia denuncia);
+
+    void exportarDenunciasExcel();
 }

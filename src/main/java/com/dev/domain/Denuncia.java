@@ -24,7 +24,8 @@ public class Denuncia {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ID_DENUNCIA")
 	private Integer idDenuncia;
-	
+
+
 	@Column(name="FC_ALTA_DENUNCIA", nullable = false)
 	private LocalDate fcAltaDenuncia;
 	
@@ -39,9 +40,9 @@ public class Denuncia {
 	@Column(name="FC_HECHOS", nullable = false)
 	private LocalDate fcHechos;
 	
-	@ManyToOne
-	@JoinColumn(name="ID_AUXILIAR", nullable = false)
-	private CatalogosValores auxiliar;
+//	@ManyToOne
+//	@JoinColumn(name="ID_AUXILIAR", nullable = false)
+//	private CatalogosValores auxiliar;
 	
 	@Column(name="NM_DENUNCIA", nullable = false)
 	private String nmDenuncia;
@@ -49,7 +50,7 @@ public class Denuncia {
 	@Column(name="FC_PLAZO", nullable = false)
 	private LocalDate fcPlazo;
 	
-	@ManyToOne // (fetch= FetcType.LAZY)
+	@ManyToOne // (fetch= FetcType.LAZY)(REPRESENTA LA ETAPA)
 	@JoinColumn(name="ID_ESTADO", nullable = false)
 	private CatalogosValores estadoDenuncia;
 	
@@ -87,6 +88,33 @@ public class Denuncia {
 	/**numero del documento del que se ha ejecutado la denuncia**/
 	@Column(name="NM_DOCUMENTO", nullable = false)
 	private String nmDocumento;
+
+
+	// ultimos datos agregados
+	@Column(name="LINK_FILE")
+	private  String linkFile;
+
+	@Column(name="NM_ARCHIVO")
+	private String nmArchivo;
+
+	@Column(name="FC_PRORROGA")
+	private LocalDate fcProrroga;
+
+	@ManyToOne
+	@JoinColumn(name="ID_EXPEDIENTE_ETAPA")
+	private CatalogosValores estadoExpedienteEtapa;
+
+	@Column(name = "ID_ANAQUEL")
+	private Integer anaquel;
+
+	@Column(name = "ID_BANDA")
+	private Integer banda;
+
+	@Column(name = "ID_PAQUETE")
+	private Integer paquete;
+
+	@Column(name = "CODIGO_ARCHIVO")
+	private String codigoArchivo;
 
 	//@JsonBackReference
 	@OneToMany

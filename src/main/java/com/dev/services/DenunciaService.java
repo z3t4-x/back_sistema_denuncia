@@ -3,6 +3,7 @@ package com.dev.services;
 import java.util.List;
 
 import com.dev.domain.Denuncia;
+import com.dev.domain.DenunciaHistorico;
 import com.dev.domain.DenunciaPersona;
 import com.dev.dto.DenunciaDTO;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +29,9 @@ public interface DenunciaService {
      */
     @Transactional
     DenunciaDTO modificar(DenunciaDTO denunciaDTO, String usuarioOperacion) throws Exception;
+
+//    @Transactional(readOnly = false, rollbackFor = {Exception.class})
+//    DenunciaDTO modificar(DenunciaDTO denunciaDTO) throws Exception;
 
     /**
      * solo listará la denuncia en estado "denuncia"
@@ -72,4 +76,15 @@ public interface DenunciaService {
 
     void eliminar(Integer id) throws Exception;
 
+   // List<DenunciaDTO> buscarDenuncias(DenunciaDTO denunciaDTO);
+
+    List<Denuncia> buscarDenuncias(Denuncia denuncia);
+
+    long totalDenuncias();
+
+    long totalPreliminar();
+
+    long totalPreparatoria();
+
+    List<DenunciaHistorico> lstDenunciaHistorico(Integer idDenuncia);
 }

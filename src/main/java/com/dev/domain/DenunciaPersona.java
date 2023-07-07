@@ -28,6 +28,7 @@ public class DenunciaPersona{
 	private Integer idDenuncia;
 
 	//@JsonIgnoreProperties("lstDenunciasPersonas")
+	//@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "ID_PERSONA", nullable = false)
 	private Persona persona;

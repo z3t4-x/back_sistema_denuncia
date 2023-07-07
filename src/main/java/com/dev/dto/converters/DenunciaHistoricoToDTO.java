@@ -32,6 +32,14 @@ public enum DenunciaHistoricoToDTO implements Function<DenunciaHistorico, Denunc
         if (StringUtils.isBlank(entity.getDescripcion())) {
             dto.setDescripcion(StringUtils.EMPTY);
         }
+
+        if (StringUtils.isBlank(entity.getLinkFile())) {
+            dto.setLinkFile(StringUtils.EMPTY);
+        }
+
+        if (StringUtils.isBlank(entity.getCodigoArchivo())) {
+            dto.setCodArchivo(StringUtils.EMPTY);
+        }
     }
 
 }

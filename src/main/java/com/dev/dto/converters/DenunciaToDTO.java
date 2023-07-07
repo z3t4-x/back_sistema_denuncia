@@ -42,10 +42,14 @@ public enum DenunciaToDTO implements Function<Denuncia, DenunciaDTO> {
                 dto.setTipoDocumento(CatalogosValoresToDTO.INSTANCE.apply(entity.getTipoDocumento()));
             }
 
-
-            if (entity.getAuxiliar() != null) {
-                dto.setAuxiliar(CatalogosValoresToDTO.INSTANCE.apply(entity.getAuxiliar()));
+            if (entity.getEstadoExpedienteEtapa() != null) {
+                dto.setEstadoExpedienteEtapa(CatalogosValoresToDTO.INSTANCE.apply(entity.getEstadoExpedienteEtapa()));
             }
+
+
+//            if (entity.getAuxiliar() != null) {
+//                dto.setAuxiliar(CatalogosValoresToDTO.INSTANCE.apply(entity.getAuxiliar()));
+//            }
 
              if (entity.getLstDenunciantes() != null && !entity.getLstDenunciantes().isEmpty()) {
                 List<DenunciaPersonaDTO> lstDenunciantesDTO = entity.getLstDenunciantes().stream()

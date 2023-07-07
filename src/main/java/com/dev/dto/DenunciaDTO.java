@@ -1,11 +1,13 @@
 package com.dev.dto;
 
+import com.dev.domain.CatalogosValores;
 import com.dev.domain.Denuncia;
 import com.dev.domain.Usuario;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -31,7 +33,18 @@ public class DenunciaDTO extends AuditoriaDTO implements Serializable {
     private String nmDocumento;
     private  String nmExpedientePreparatoria;
     private  String nmExpedienteInvPreliminar;
-    private CatalogosValoresDTO auxiliar;
+
+    // ultimos datos agregados
+    private  String linkFile;
+    private String nmArchivo;
+
+    private LocalDate fcProrroga;
+    private CatalogosValoresDTO estadoExpedienteEtapa;
+    private Integer anaquel;
+    private Integer banda;
+    private Integer paquete;
+    private String codArchivo;
+
     private List<DenunciaPersonaDTO> lstDenunciantes;
     private List<DenunciaPersonaDTO> lstDenunciados;
 
@@ -43,7 +56,6 @@ public class DenunciaDTO extends AuditoriaDTO implements Serializable {
         this.investigador = new UsuarioDTO();
         this.estadoDenuncia = new CatalogosValoresDTO();
         this.mesaParte = new CatalogosValoresDTO();
-        this.auxiliar = new CatalogosValoresDTO();
         this.tipoDocumento = new CatalogosValoresDTO();
         this.lstDenunciantes = new ArrayList<>();
         this.lstDenunciados = new ArrayList<>();

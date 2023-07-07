@@ -25,6 +25,8 @@ public final class Constantes {
 
 		public static final Integer PREPARATORIA = 9;
 
+		public static final Integer INTERMEDIA_ID = 43;
+
 		public static final Integer OTROS = 10;
 
 	}
