@@ -45,6 +45,7 @@ public class DenunciaPersonaController {
             denunciaPersonaService.exportarDenunciasExcel();
             return ResponseEntity.ok("Denuncias exportadas exitosamente");
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al exportar las denuncias");
         }
     }

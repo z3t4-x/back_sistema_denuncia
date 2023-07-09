@@ -593,6 +593,7 @@ public class DenunciaServiceImpl implements DenunciaService {
 			numDenuncia = String.format("%03d", denunciaDAO.countByFiscaliaIdValorAndEstadoDenunciaIdValor(denunciaDTO.getFiscalia().getIdValor(), denunciaDTO.getEstadoDenuncia().getIdValor()) + 1);
 		}
 
+
 		CatalogosValores codigoFiscalia = catValoresDAO.findById(denunciaDTO.getFiscalia().getIdValor())
 				.orElseThrow(() -> new IllegalArgumentException("No se encontró la fiscalía con ID: " + denunciaDTO.getFiscalia().getIdValor()));
 

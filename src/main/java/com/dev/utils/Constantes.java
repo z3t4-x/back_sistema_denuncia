@@ -77,9 +77,9 @@ public final class Constantes {
 
 		}
 
-		public static final Integer DENUNCIANTE = 33; // --> por definir
+		public static final Integer DENUNCIANTE = 34; // --> por definir
 
-		public  static final Integer DENUNCIADO = 34;
+		public  static final Integer DENUNCIADO = 35;
 	}
 
 	/**

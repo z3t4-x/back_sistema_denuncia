@@ -17,7 +17,7 @@ public interface UsuarioDAO extends JpaRepository<Usuario, Integer> {
 
     boolean existsByEmail(String email);
 
-    List<Usuario> findByFiscaliaIdValor(Integer fiscalia);
+    List<Usuario> findByFiscaliaIdValorAndCdUsuBajaIsNull(Integer fiscalia);
 
     List<Usuario> findByRolesRolNombreAndFiscaliaIdValor(String rolNombre, Integer idFiscalia);
 

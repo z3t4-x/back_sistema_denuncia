@@ -90,7 +90,7 @@ public class AuthController {
     }
 
 
-    @PutMapping
+    @PutMapping("/modificar")
     public ResponseEntity<UsuarioDTO> modificar(@RequestBody UsuarioDTO usuarioDTO) throws Exception {
         UsuarioDTO usuarioModificadoDTO = usuarioService.modificar(usuarioDTO);
         return ResponseEntity.ok(usuarioModificadoDTO);
@@ -102,6 +102,7 @@ public class AuthController {
     public ResponseEntity<List<UsuarioDTO>> listarUsuarios() {
         try {
             List<UsuarioDTO> usuarios = usuarioService.listarUsuarios();
+
             return ResponseEntity.ok(usuarios);
         } catch (Exception e) {
             // Manejar cualquier excepción y devolver una respuesta de error adecuada
@@ -138,17 +139,28 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<JwtDTO> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult){
-        if(bindingResult.hasErrors())
-           log.error("Campos mal puestos. ");
-        Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUsuario.getCdUsuario(), loginUsuario.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtProvider.generateToken(authentication);
-        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-        JwtDTO jwtDto = new JwtDTO(jwt, userDetails.getUsername(), userDetails.getAuthorities());
-        return new ResponseEntity(jwtDto, HttpStatus.OK);
+    public ResponseEntity<?> login(@Valid @RequestBody LoginUsuario loginUsuario, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ResponseEntity<>("Campos mal puestos.", HttpStatus.BAD_REQUEST);
+        }
+
+        Usuario usuario = usuarioService.obtenerCdUsuario(loginUsuario.getCdUsuario()).orElse(null);
+
+        if (usuario == null) {
+            return new ResponseEntity<>("El usuario no existe.", HttpStatus.UNAUTHORIZED);
+        } else if (usuario.getCdUsuBaja() != null) {
+            return new ResponseEntity<>("El usuario ha sido dado de baja.", HttpStatus.UNAUTHORIZED);
+        } else {
+            Authentication authentication =
+                    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUsuario.getCdUsuario(), loginUsuario.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtProvider.generateToken(authentication);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            JwtDTO jwtDto = new JwtDTO(jwt, userDetails.getUsername(), userDetails.getAuthorities());
+            return new ResponseEntity<>(jwtDto, HttpStatus.OK);
+        }
     }
+
 
 
     @GetMapping("/usuarioRolFiscalia")

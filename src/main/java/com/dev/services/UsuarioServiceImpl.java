@@ -103,15 +103,16 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         if (tieneRol(usuario, Constantes.Roles.ID_ROL_ADMINISTRADOR) || tieneRol(usuario, Constantes.Roles.ID_ROL_MESA_DE_PARTES)) {
-            if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_14)) {
-                List<Usuario> lstUsuario = usuarioDAO.findByFiscaliaIdValor(usuario.getFiscalia().getIdValor());
+            if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_14) ) {
+                List<Usuario> lstUsuario = usuarioDAO.findByFiscaliaIdValorAndCdUsuBajaIsNull(usuario.getFiscalia().getIdValor());
+
                 return lstUsuario.stream()
                         .map(UsuarioToDTO.INSTANCE::apply)
                         .collect(Collectors.toList());
 
             }
             if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_13)) {
-                List<Usuario> lstUsuario = usuarioDAO.findByFiscaliaIdValor(usuario.getFiscalia().getIdValor());
+                List<Usuario> lstUsuario = usuarioDAO.findByFiscaliaIdValorAndCdUsuBajaIsNull(usuario.getFiscalia().getIdValor());
                 return lstUsuario.stream()
                         .map(UsuarioToDTO.INSTANCE::apply)
                         .collect(Collectors.toList());
