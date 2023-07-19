@@ -584,16 +584,11 @@ public class DenunciaServiceImpl implements DenunciaService {
 			codigoDenuncia = "PRE";
 		}
 
-//		else if (Constantes.estadoInvestigacion.INTERMEDIA_ID.equals(denunciaDTO.getEstadoDenuncia().getIdValor())) {
-//			codigoDenuncia = "I";
-//		}
-
 		String numDenuncia = "";
 		if (denunciaDTO.getFiscalia() != null) {
-			numDenuncia = String.format("%03d", denunciaDAO.countByFiscaliaIdValorAndEstadoDenunciaIdValor(denunciaDTO.getFiscalia().getIdValor(), denunciaDTO.getEstadoDenuncia().getIdValor()) + 1);
+			numDenuncia = String.format("%03d", denunciaDAO.countByFiscaliaIdValorAndEstadoDenunciaIdValor
+					(denunciaDTO.getFiscalia().getIdValor(), denunciaDTO.getEstadoDenuncia().getIdValor()) + 1);
 		}
-
-
 		CatalogosValores codigoFiscalia = catValoresDAO.findById(denunciaDTO.getFiscalia().getIdValor())
 				.orElseThrow(() -> new IllegalArgumentException("No se encontró la fiscalía con ID: " + denunciaDTO.getFiscalia().getIdValor()));
 

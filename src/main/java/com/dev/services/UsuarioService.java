@@ -1,5 +1,6 @@
 package com.dev.services;
 
+import com.dev.domain.Rol;
 import com.dev.domain.Usuario;
 import com.dev.dto.PersonaDTO;
 import com.dev.dto.UsuarioDTO;
@@ -38,6 +39,8 @@ public interface UsuarioService {
      * @throws Exception
      */
     List<UsuarioDTO> listarUsuarios() throws Exception;
+
+    List<Rol> obtenerRolesUsuario();
 
     List<UsuarioDTO> obtenerUsuariosPorRolYFiscalia();
 

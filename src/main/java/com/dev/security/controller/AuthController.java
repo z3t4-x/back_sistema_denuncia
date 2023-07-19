@@ -14,6 +14,7 @@ import com.dev.security.dto.LoginUsuario;
 import com.dev.services.RolService;
 import com.dev.services.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -167,6 +168,18 @@ public class AuthController {
     public ResponseEntity<List<UsuarioDTO>> obtenerUsuariosPorRolYFiscalia() {
         List<UsuarioDTO> usuarios = usuarioService.obtenerUsuariosPorRolYFiscalia();
         return ResponseEntity.ok(usuarios);
+    }
+
+
+    @GetMapping("/usuario")
+    public ResponseEntity<List<Rol>> obtenerRolesUsuario() {
+        try {
+            List<Rol> roles = usuarioService.obtenerRolesUsuario();
+            return ResponseEntity.ok(roles);
+        } catch (ServiceException e) {
+
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 

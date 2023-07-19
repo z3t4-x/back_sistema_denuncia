@@ -66,6 +66,7 @@ public class DenunciaHistorico  {
 
     private String numDocumento;
 
+    @Column( length = 1000)
     private String descripcion;
 
     private String cdExpedientePreparatoria;
@@ -73,8 +74,9 @@ public class DenunciaHistorico  {
     private String cdExpedientePreliminar;
 
     // ultimos datos agregados
-    @Column(name="LINK_FILE")
+    @Column(name="LINK_FILE",  length = 1000)
     private  String linkFile;
+
     @Column(name="NM_ARCHIVO")
     private String nmArchivo;
 

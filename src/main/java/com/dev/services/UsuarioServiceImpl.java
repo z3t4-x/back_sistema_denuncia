@@ -2,6 +2,7 @@ package com.dev.services;
 
 import com.dev.dao.UsuarioDAO;
 import com.dev.dao.UsuarioRolDAO;
+import com.dev.domain.Rol;
 import com.dev.domain.Usuario;
 import com.dev.domain.UsuarioPrincipal;
 import com.dev.dto.UsuarioDTO;
@@ -123,6 +124,25 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
 
+
+    @Override
+    public List<Rol> obtenerRolesUsuario(){
+
+        UsuarioPrincipal usuarioPrincipal = getUsuarioPrincipalAutenticado();
+        String cdUsuario = usuarioPrincipal.getUsername();
+        Usuario usuario = usuarioDAO.findByCdUsuario(cdUsuario).orElse(null);
+        if (usuario == null) {
+            throw new ServiceException("No se encontró el usuario.");
+        }
+        return usuario.getRoles();
+    }
+
+
+
+
+
+
+
     /**
      * método para listar usuarios con rol de investigador y por fiscalía
      * @return
@@ -154,6 +174,16 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
 
+
+
+
+
+    /**
+     *  método para identificar el rol que tiene
+     * @param usuario
+     * @param idRol
+     * @return
+     */
 
     private boolean tieneRol(Usuario usuario, Integer idRol) {
         return usuario.getRoles().stream()

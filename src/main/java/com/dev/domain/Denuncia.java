@@ -58,7 +58,7 @@ public class Denuncia {
 	@JoinColumn(name="ID_MESA_PARTE", nullable = true)
 	private CatalogosValores mesaParte;
 	
-	@Column(name="DS_DESCRIPCION")
+	@Column(name="DS_DESCRIPCION", length = 1000)
 	private String dsDescripcion;
 
 	@Column(name="NM_EXPEDIENTE_PREPARATORIA")
@@ -91,7 +91,7 @@ public class Denuncia {
 
 
 	// ultimos datos agregados
-	@Column(name="LINK_FILE")
+	@Column(name="LINK_FILE" , length = 1000)
 	private  String linkFile;
 
 	@Column(name="NM_ARCHIVO")
