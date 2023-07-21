@@ -178,11 +178,11 @@ public class DenunciaServiceImpl implements DenunciaService {
 		denunciaDTO.setLstDenunciados(null);
 		denunciaDTO.setLstDenunciantes(null);
 
-		if(denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.PRELIMINAR)){
+		if(denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.ID_PRELIMINAR)){
 			denunciaDTO.setNmExpedienteInvPreliminar(this.generarCodigoDenuncia(denunciaDTO));
 		}
 
-		if(denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.PREPARATORIA)){
+		if(denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.ID_PREPARATORIA)){
 			denunciaDTO.setNmExpedientePreparatoria(this.generarCodigoDenuncia(denunciaDTO));
 		}
 
@@ -226,20 +226,16 @@ public class DenunciaServiceImpl implements DenunciaService {
 	public List<DenunciaDTO> lstDenuncias() throws Exception {
 
 		UsuarioPrincipal usuarioPrincipal = getUsuarioPrincipalAutenticado();
-
 		String cdUsuario = usuarioPrincipal.getUsername();
-
 		Usuario usuario = usuarioDAO.findByCdUsuario(cdUsuario).get();
 
 		if (usuario == null) {
 			throw new ServiceException("No se encontró el usuario.");
 
 		}
-
 		if (tieneRol(usuario, Constantes.Roles.ID_ROL_ADMINISTRADOR) || tieneRol(usuario, Constantes.Roles.ID_ROL_MESA_DE_PARTES)) {
 
 			if (usuario.getFiscalia().getIdValor().equals(Constantes.Fiscalias.ID_FISCALIA_14)) {
-
 				List<Denuncia> lstDenuncias = denunciaDAO.findByFiscaliaIdValorAndEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(
 						usuario.getFiscalia().getIdValor(), Constantes.codigoInvestigacion.DENUNCIA);
 
@@ -256,7 +252,6 @@ public class DenunciaServiceImpl implements DenunciaService {
 						.map(DenunciaToDTO.INSTANCE::apply)
 						.collect(Collectors.toList());
 			}
-
 		}
 
 		if (tieneRol(usuario, Constantes.Roles.ID_ROL_INVESTIGADOR)) {
@@ -511,7 +506,7 @@ public class DenunciaServiceImpl implements DenunciaService {
 	 */
 	@Override
 	public long totalDenuncias() {
-		return denunciaDAO.countByEstadoDenunciaIdValor(Constantes.estadoInvestigacion.DENUNCIA);
+		return denunciaDAO.countByEstadoDenunciaIdValor(Constantes.estadoInvestigacion.ID_DENUNCIA);
 	}
 
 	/**
@@ -520,7 +515,7 @@ public class DenunciaServiceImpl implements DenunciaService {
 	 */
 	@Override
 	public long totalPreliminar() {
-		return denunciaDAO.countByEstadoDenunciaIdValor(Constantes.estadoInvestigacion.PRELIMINAR);
+		return denunciaDAO.countByEstadoDenunciaIdValor(Constantes.estadoInvestigacion.ID_PRELIMINAR);
 	}
 
 	/**
@@ -529,7 +524,7 @@ public class DenunciaServiceImpl implements DenunciaService {
 	 */
 	@Override
 	public long totalPreparatoria() {
-		return denunciaDAO.countByEstadoDenunciaIdValor(Constantes.estadoInvestigacion.PREPARATORIA);
+		return denunciaDAO.countByEstadoDenunciaIdValor(Constantes.estadoInvestigacion.ID_PREPARATORIA);
 	}
 
 
@@ -575,15 +570,13 @@ public class DenunciaServiceImpl implements DenunciaService {
 		LocalDate fecha = LocalDate.now();
 		Integer anio = fecha.getYear();
 		String codigoDenuncia = "";
-
-		if (Constantes.estadoInvestigacion.DENUNCIA.equals(denunciaDTO.getEstadoDenuncia().getIdValor())) {
+		if (Constantes.estadoInvestigacion.ID_DENUNCIA.equals(denunciaDTO.getEstadoDenuncia().getIdValor())) {
 			codigoDenuncia = "D";
-		} else if (Constantes.estadoInvestigacion.PRELIMINAR.equals(denunciaDTO.getEstadoDenuncia().getIdValor())) {
+		} else if (Constantes.estadoInvestigacion.ID_PRELIMINAR.equals(denunciaDTO.getEstadoDenuncia().getIdValor())) {
 			codigoDenuncia = "IP";
-		} else if (Constantes.estadoInvestigacion.PREPARATORIA.equals(denunciaDTO.getEstadoDenuncia().getIdValor())) {
+		} else if (Constantes.estadoInvestigacion.ID_PREPARATORIA.equals(denunciaDTO.getEstadoDenuncia().getIdValor())) {
 			codigoDenuncia = "PRE";
 		}
-
 		String numDenuncia = "";
 		if (denunciaDTO.getFiscalia() != null) {
 			numDenuncia = String.format("%03d", denunciaDAO.countByFiscaliaIdValorAndEstadoDenunciaIdValor
@@ -594,19 +587,18 @@ public class DenunciaServiceImpl implements DenunciaService {
 
 		StringBuilder stringBuilder = new StringBuilder();
 
-		if (denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.DENUNCIA)) {
+		if (denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.ID_DENUNCIA)) {
 			stringBuilder.append(codigoDenuncia);
 		}
 		stringBuilder.append(numDenuncia);
 		stringBuilder.append("-");
 		stringBuilder.append(anio);
 		stringBuilder.append("-");
-		if (denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.PRELIMINAR)) {
+		if (denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.ID_PRELIMINAR)) {
 			stringBuilder.append(codigoDenuncia);
 			stringBuilder.append("-");
 		}
-
-		if (denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.PREPARATORIA)) {
+		if (denunciaDTO.getEstadoDenuncia().getIdValor().equals(Constantes.estadoInvestigacion.ID_PREPARATORIA)) {
 			stringBuilder.append("02");
 			stringBuilder.append("-");
 		}
@@ -639,12 +631,11 @@ public class DenunciaServiceImpl implements DenunciaService {
 			denunciaDTO.setFcAltaDenuncia(fechaAltaDenuncia);
 			denunciaDTO.setFcPlazo(fechaPlazoRevision);
 
-			denunciaDTO.setEstadoDenuncia(new CatalogosValoresDTO(Constantes.estadoInvestigacion.DENUNCIA));
+			denunciaDTO.setEstadoDenuncia(new CatalogosValoresDTO(Constantes.estadoInvestigacion.ID_DENUNCIA));
 
 			if(usuario.getFiscalia()!=null) {
 				denunciaDTO.setFiscalia(new CatalogosValoresDTO(usuario.getFiscalia().getIdValor()));
 			}
-
 			denunciaDTO.setCdUsuAlta(usuario.getCdUsuario());
 
 			if(usuario.getMesaParte()!=null) {
@@ -657,10 +648,7 @@ public class DenunciaServiceImpl implements DenunciaService {
 		else {
 			throw new ServiceException("No se encontró un usuario con el código " + cdUsuario);
 		}
-/*		Denuncia denunciaEntity = DenunciaToEntity.INSTANCE.apply(denunciaDTO);
-		Denuncia denunciaGuardada = denunciaDAO.save(denunciaEntity);*/
-		return denunciaDTO; //DenunciaToDTO.INSTANCE.apply(denunciaGuardada);
-
+		return denunciaDTO;
 	}
 
 	/**
@@ -671,14 +659,14 @@ public class DenunciaServiceImpl implements DenunciaService {
 	 */
 	private DenunciaDTO cambiarEstadoDenuncia(DenunciaDTO denunciaDTO, CatalogosValoresDTO nuevoEstado) throws Exception {
 		CatalogosValoresDTO estadoActual = denunciaDTO.getEstadoDenuncia();
-		if (estadoActual.getIdValor().equals(Constantes.estadoInvestigacion.DENUNCIA) &&
-				(nuevoEstado.getIdValor().equals(Constantes.estadoInvestigacion.PRELIMINAR) ||
-						nuevoEstado.getIdValor().equals(Constantes.estadoInvestigacion.DESESTIMAR))) {
+		if (estadoActual.getIdValor().equals(Constantes.estadoInvestigacion.ID_DENUNCIA) &&
+				(nuevoEstado.getIdValor().equals(Constantes.estadoInvestigacion.ID_PRELIMINAR) ||
+						nuevoEstado.getIdValor().equals(Constantes.estadoInvestigacion.ID_DESESTIMAR))) {
 
 			denunciaDTO.setEstadoDenuncia(nuevoEstado);
 
-		} else if (estadoActual.getIdValor().equals(Constantes.estadoInvestigacion.PRELIMINAR) &&
-				nuevoEstado.getIdValor().equals(Constantes.estadoInvestigacion.PREPARATORIA)) {
+		} else if (estadoActual.getIdValor().equals(Constantes.estadoInvestigacion.ID_PRELIMINAR) &&
+				nuevoEstado.getIdValor().equals(Constantes.estadoInvestigacion.ID_PREPARATORIA)) {
 
 			denunciaDTO.setEstadoDenuncia(nuevoEstado);
 		}

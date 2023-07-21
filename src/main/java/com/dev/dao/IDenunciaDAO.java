@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -19,7 +20,7 @@ public interface IDenunciaDAO extends JpaRepository<Denuncia, Integer>, JpaSpeci
 
     Denuncia findByNmDenunciaLikeIgnoreCase(String numDenuncia);
 
-    List<Denuncia> findByEstadoDenunciaIdValorAndFcBajaFilaIsNull(String idValor);
+    List<Denuncia> findByEstadoDenunciaIdValorAndFcBajaFilaIsNull(Integer idValor);
 
     List<Denuncia> findByEstadoDenunciaCdCodigoAndFcBajaFilaIsNull(String cdCodigo);
 
@@ -38,7 +39,7 @@ public interface IDenunciaDAO extends JpaRepository<Denuncia, Integer>, JpaSpeci
     long countByEstadoDenunciaIdValor(Integer estadoDenuncia);
 
 
-
+    List<Denuncia> findByEstadoDenunciaIdValorAndFcAltaDenunciaBetween(Integer idEstadoInvestigacion, LocalDate fechaInicio, LocalDate fechaFin);
 
 
 

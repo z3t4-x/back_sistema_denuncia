@@ -3,14 +3,28 @@ package com.dev.services;
 import com.dev.domain.Denuncia;
 import com.dev.domain.DenunciaPersona;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface DenunciaPersonaService {
-    //List<DenunciaPersona> obtenerDenunciantesYDenunciados(Denuncia denuncia);
 
+
+    /**
+     * lista los denunciantes
+     * @param denuncia
+     * @return
+     */
     List<DenunciaPersona> obtenerDenunciantes(Denuncia denuncia);
 
+    /**
+     * lsta los denunciados
+     * @param denuncia
+     * @return
+     */
     List<DenunciaPersona> obtenerDenunciados(Denuncia denuncia);
 
-    void exportarDenunciasExcel();
+    /**
+     * exporta las denuncias en excel
+     */
+    byte[] exportarDenunciasExcel(Integer idEtapaInvestigacion, LocalDate fecha);
 }

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -25,6 +26,9 @@ public interface IDenunciaPersonaDAO extends JpaRepository<DenunciaPersona, Inte
             + "WHERE dp.ID_DENUNCIA = :idDenuncia "
             + "AND dp.ID_TIPO_PERSONA = :idTipoPersona", nativeQuery = true)
     List<DenunciaPersona> findByDenunciaAndTipoPersonaIdValor(@Param("idDenuncia") Integer idDenuncia, @Param("idTipoPersona") Integer idTipoPersona);
+
+
+
 
 
 }

@@ -15,17 +15,17 @@ public final class Constantes {
 
 		}
 
-		public static final Integer DENUNCIA = 5;
+		public static final Integer ID_DENUNCIA = 5;
 
-		public static final Integer DEVOLVER = 6;
+		public static final Integer ID_DEVOLVER = 6;
 
-		public static final Integer DESESTIMAR = 7;
+		public static final Integer ID_DESESTIMAR = 7;
 
-		public static final Integer PRELIMINAR = 8;
+		public static final Integer ID_PRELIMINAR = 8;
 
-		public static final Integer PREPARATORIA = 9;
+		public static final Integer ID_PREPARATORIA = 9;
 
-		public static final Integer INTERMEDIA_ID = 43;
+		public static final Integer ID_INTERMEDIA = 13;
 
 		public static final Integer OTROS = 10;
 
@@ -43,14 +43,10 @@ public final class Constantes {
 
 		public static final String DENUNCIA = "DCIA";
 
-		public static final String DEVOLVER = "DVER";
-
-		public static final String DESESTIMAR = "DST";
-
 		public static final String PRELIMINAR = "PRM";
 
 		public static final String PREPARATORIA = "PRPA";
-
+		public static final String INTERMEDIA = "INTR";
 		public static final String OTROS = "OTR";
 
 	}

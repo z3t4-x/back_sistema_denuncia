@@ -42,7 +42,7 @@ public class DenunciaController {
 	private  UsuarioService usuarioService;
 
 	/**
-	 * listar todo
+	 * listar todas las denuncias
 	 * @return
 	 */
 	@GetMapping
@@ -55,6 +55,10 @@ public class DenunciaController {
 		}
 	}
 
+	/**
+	 * lista las etapas en investigación preliminar
+	 * @return
+	 */
 	@GetMapping("/preliminar")
 	public ResponseEntity<List<DenunciaDTO>> listarPreliminar() {
 		try {
@@ -65,6 +69,10 @@ public class DenunciaController {
 		}
 	}
 
+	/**
+	 * lista las etapas en investigación preparatoria
+	 * @return
+	 */
 	@GetMapping("/preparatoria")
 	public ResponseEntity<List<DenunciaDTO>> listarPreparatoria() {
 		try {
@@ -149,6 +157,22 @@ public class DenunciaController {
 		}
 	}
 
+	/**
+	 * búsqueda de denuncias y o etapas de la investigación
+	 * @param fcAltaDenuncia
+	 * @param fcIngresoDocumento
+	 * @param fcHechos
+	 * @param idTipoDelito
+	 * @param idInvestigador
+	 * @param nmDenuncia
+	 * @param idEstadoDenuncia
+	 * @param idTipoDocumento
+	 * @param nmExpedienteInvPreliminar
+	 * @param nmExpedientePreparatoria
+	 * @param nmDocumento
+	 * @return
+	 * @throws Exception
+	 */
 
 	@GetMapping("/buscar")
 	public ResponseEntity<List<Denuncia>> buscarDenuncias(@RequestParam(value = "fcAltaDenuncia", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fcAltaDenuncia,
@@ -192,6 +216,11 @@ public class DenunciaController {
 	}
 
 
+	/**
+	 * lista el historico de denuncia
+	 * @param idDenuncia
+	 * @return
+	 */
 	@GetMapping("/historico/{idDenuncia}")
 	public ResponseEntity<List<DenunciaHistorico>> obtenerHistoricoDenuncia(@PathVariable Integer idDenuncia) {
 		List<DenunciaHistorico> historico = service.lstDenunciaHistorico(idDenuncia);
